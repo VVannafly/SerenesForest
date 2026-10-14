@@ -1,0 +1,450 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000018 /* PreloadedLibrary in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000018 /* PreloadedLibrary */; };
+		A10000000000000000000010 /* GameCovers in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* GameCovers */; };
+		A10000000000000000000012 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* AppIcon.xcassets */; };
+		A10000000000000000000013 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001 /* Localizable.strings */; };
+		A10000000000000000000016 /* GFDL-1.3.txt in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000016 /* GFDL-1.3.txt */; };
+		A10000000000000000009000 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009000 /* DesignSystem.swift */; };
+		A10000000000000000009001 /* ImagesAndComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009001 /* ImagesAndComponents.swift */; };
+		A10000000000000000009002 /* GameVisuals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009002 /* GameVisuals.swift */; };
+		A15555555555555555555550 /* GameOverviewMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25555555555555555555550 /* GameOverviewMapper.swift */; };
+		A15555555555555555555551 /* DiscoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25555555555555555555551 /* DiscoverViewModel.swift */; };
+		A10000000000000000009003 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009003 /* RootView.swift */; };
+		A10000000000000000009004 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009004 /* SettingsView.swift */; };
+		A10000000000000000009005 /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009005 /* DiscoverView.swift */; };
+		A10000000000000000009006 /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009006 /* GamesView.swift */; };
+		A10000000000000000009007 /* GameCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009007 /* GameCard.swift */; };
+		A10000000000000000009008 /* GameModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009008 /* GameModels.swift */; };
+		A10000000000000000009009 /* GameNavigationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009009 /* GameNavigationRow.swift */; };
+		A10000000000000000009010 /* GameArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009010 /* GameArtworkView.swift */; };
+		A10000000000000000009011 /* ArtworkThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009011 /* ArtworkThumbnail.swift */; };
+		A10000000000000000009012 /* GameAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009012 /* GameAboutView.swift */; };
+		A10000000000000000009013 /* GameTopicItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009013 /* GameTopicItemsView.swift */; };
+		A10000000000000000009014 /* GameTopicLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009014 /* GameTopicLinksView.swift */; };
+		A10000000000000000009015 /* GameLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009015 /* GameLinkView.swift */; };
+		A10000000000000000009016 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009016 /* NewsView.swift */; };
+		A10000000000000000009017 /* GameNewsFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009017 /* GameNewsFeedView.swift */; };
+		A10000000000000000009018 /* GuideModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009018 /* GuideModels.swift */; };
+		A10000000000000000009019 /* GuidesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009019 /* GuidesView.swift */; };
+		A10000000000000000009020 /* WikiLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009020 /* WikiLibraryView.swift */; };
+		A10000000000000000009021 /* SavedPagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009021 /* SavedPagesView.swift */; };
+		A10000000000000000009022 /* AllPagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009022 /* AllPagesView.swift */; };
+		A10000000000000000009023 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009023 /* MediaView.swift */; };
+		A10000000000000000009024 /* AssetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009024 /* AssetRow.swift */; };
+		A10000000000000000009025 /* AssetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009025 /* AssetDetailView.swift */; };
+		A10000000000000000009026 /* SavedPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009026 /* SavedPDFView.swift */; };
+		A10000000000000000009027 /* PageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009027 /* PageRow.swift */; };
+		A10000000000000000009028 /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009028 /* BookmarkButton.swift */; };
+		A10000000000000000009029 /* ArticleTrailTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009029 /* ArticleTrailTarget.swift */; };
+		A10000000000000000009030 /* SavedArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009030 /* SavedArticleView.swift */; };
+		A10000000000000000009031 /* ViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009031 /* ViewHelpers.swift */; };
+		A10000000000000000009032 /* GameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009032 /* GameDetailView.swift */; };
+		A10000000000000000009033 /* GameDetailSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009033 /* GameDetailSections.swift */; };
+		A10000000000000000009034 /* GameDetailHero.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009034 /* GameDetailHero.swift */; };
+		A10000000000000000009035 /* PageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009035 /* PageDetailView.swift */; };
+		A10000000000000000009036 /* PageDetailNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009036 /* PageDetailNavigation.swift */; };
+		A10000000000000000009037 /* LibraryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009037 /* LibraryModels.swift */; };
+		A10000000000000000009038 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009038 /* Catalog.swift */; };
+		A10000000000000000009039 /* ContentSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009039 /* ContentSync.swift */; };
+
+		A10000000000000000009043 /* SiteHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009043 /* SiteHTTPError.swift */; };
+		A10000000000000000009044 /* ArticleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009044 /* ArticleModels.swift */; };
+		A10000000000000000009045 /* ArticleTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009045 /* ArticleTranslation.swift */; };
+		A10000000000000000009057 /* ArticlePresentationMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009057 /* ArticlePresentationMapper.swift */; };
+		A10000000000000000009058 /* GameLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009058 /* GameLinkViewModel.swift */; };
+		A10000000000000000009059 /* GameNavigationRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009059 /* GameNavigationRowViewModel.swift */; };
+		A10000000000000000009060 /* GameArtworkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009060 /* GameArtworkViewModel.swift */; };
+		A10000000000000000009061 /* PageRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009061 /* PageRowViewModel.swift */; };
+		A10000000000000000009062 /* AssetRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009062 /* AssetRowViewModel.swift */; };
+		A10000000000000000009063 /* FatesClassModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009063 /* FatesClassModels.swift */; };
+		A10000000000000000009064 /* FatesClassesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009064 /* FatesClassesParser.swift */; };
+		A10000000000000000009065 /* FatesClassesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009065 /* FatesClassesView.swift */; };
+		A10000000000000000009066 /* FatesClassesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009066 /* FatesClassesViewModel.swift */; };
+		A10000000000000000009067 /* AwakeningClassesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009067 /* AwakeningClassesParser.swift */; };
+		A10000000000000000009068 /* ClassSchemeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009068 /* ClassSchemeModels.swift */; };
+		A10000000000000000009069 /* SacredStonesClassSchemeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009069 /* SacredStonesClassSchemeParser.swift */; };
+		A10000000000000000009073 /* ClassesParserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009073 /* ClassesParserFactory.swift */; };
+		A10000000000000000009070 /* ClassSchemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009070 /* ClassSchemeView.swift */; };
+		A10000000000000000009071 /* ClassSchemeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009071 /* ClassSchemeViewModel.swift */; };
+		A10000000000000000009072 /* TwoStageClassGuideParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009072 /* TwoStageClassGuideParser.swift */; };
+		A10000000000000000009046 /* NativeArticleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009046 /* NativeArticleParser.swift */; };
+		A10000000000000000009047 /* NativeArticleTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009047 /* NativeArticleTree.swift */; };
+		A10000000000000000009048 /* NativeArticleBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009048 /* NativeArticleBlocks.swift */; };
+		A10000000000000000009049 /* NativeArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009049 /* NativeArticleView.swift */; };
+		A10000000000000000009050 /* FrozenArticleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009050 /* FrozenArticleTable.swift */; };
+		A10000000000000000009051 /* TableCellText.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009051 /* TableCellText.swift */; };
+		A10000000000000000009052 /* TableCellImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009052 /* TableCellImages.swift */; };
+		A10000000000000000009053 /* LocalImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009053 /* LocalImageLoader.swift */; };
+		A10000000000000000009054 /* ArticleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009054 /* ArticleImageView.swift */; };
+
+		A10000000000000000009056 /* SerenesForestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009056 /* SerenesForestApp.swift */; };
+		A19999999999999999999990 /* PageCategoryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29999999999999999999990 /* PageCategoryMapper.swift */; };
+		A19999999999999999999991 /* ContentPageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A29999999999999999999991 /* ContentPageMapper.swift */; };
+		A49999999999999999999992 /* SerenesParsing in Frameworks */ = {isa = PBXBuildFile; productRef = A49999999999999999999991 /* SerenesParsing */; };
+		A18888888888888888880000 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880000 /* SettingsViewModel.swift */; };
+		A18888888888888888880001 /* WikiLibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880001 /* WikiLibraryViewModel.swift */; };
+		A18888888888888888880002 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880002 /* GamesViewModel.swift */; };
+		A18888888888888888880003 /* AllPagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880003 /* AllPagesViewModel.swift */; };
+		A18888888888888888880004 /* SavedPagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880004 /* SavedPagesViewModel.swift */; };
+		A18888888888888888880005 /* GameDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880005 /* GameDetailViewModel.swift */; };
+		A18888888888888888880006 /* GameNewsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880006 /* GameNewsFeedViewModel.swift */; };
+		A18888888888888888880007 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880007 /* NewsViewModel.swift */; };
+		A18888888888888888880008 /* GuidesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880008 /* GuidesViewModel.swift */; };
+		A18888888888888888880009 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880009 /* RootViewModel.swift */; };
+		A18888888888888888880010 /* PageDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880010 /* PageDetailViewModel.swift */; };
+		A18888888888888888880011 /* MediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880011 /* MediaViewModel.swift */; };
+		A18888888888888888880012 /* AssetDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28888888888888888880012 /* AssetDetailViewModel.swift */; };
+		A17777777777777777777770 /* PageDetailViewModel+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27777777777777777777770 /* PageDetailViewModel+Loading.swift */; };
+		A16666666666666666666660 /* LibraryTranslationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A26666666666666666666660 /* LibraryTranslationService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000005 /* SerenesForest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SerenesForest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000018 /* PreloadedLibrary */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PreloadedLibrary; sourceTree = "<group>"; };
+		A20000000000000000000010 /* GameCovers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GameCovers; sourceTree = "<group>"; };
+		A20000000000000000000012 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000013 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A20000000000000000000016 /* GFDL-1.3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GFDL-1.3.txt"; sourceTree = "<group>"; };
+		A20000000000000000009000 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		A20000000000000000009001 /* ImagesAndComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesAndComponents.swift; sourceTree = "<group>"; };
+		A20000000000000000009002 /* GameVisuals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameVisuals.swift; sourceTree = "<group>"; };
+		A25555555555555555555550 /* GameOverviewMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverviewMapper.swift; sourceTree = "<group>"; };
+		A25555555555555555555551 /* DiscoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009003 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A20000000000000000009004 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A20000000000000000009005 /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
+		A20000000000000000009006 /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
+		A20000000000000000009007 /* GameCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCard.swift; sourceTree = "<group>"; };
+		A20000000000000000009008 /* GameModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModels.swift; sourceTree = "<group>"; };
+		A20000000000000000009009 /* GameNavigationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNavigationRow.swift; sourceTree = "<group>"; };
+		A20000000000000000009010 /* GameArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameArtworkView.swift; sourceTree = "<group>"; };
+		A20000000000000000009011 /* ArtworkThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkThumbnail.swift; sourceTree = "<group>"; };
+		A20000000000000000009012 /* GameAboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAboutView.swift; sourceTree = "<group>"; };
+		A20000000000000000009013 /* GameTopicItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTopicItemsView.swift; sourceTree = "<group>"; };
+		A20000000000000000009014 /* GameTopicLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTopicLinksView.swift; sourceTree = "<group>"; };
+		A20000000000000000009015 /* GameLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkView.swift; sourceTree = "<group>"; };
+		A20000000000000000009016 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		A20000000000000000009017 /* GameNewsFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNewsFeedView.swift; sourceTree = "<group>"; };
+		A20000000000000000009018 /* GuideModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideModels.swift; sourceTree = "<group>"; };
+		A20000000000000000009019 /* GuidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesView.swift; sourceTree = "<group>"; };
+		A20000000000000000009020 /* WikiLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiLibraryView.swift; sourceTree = "<group>"; };
+		A20000000000000000009021 /* SavedPagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPagesView.swift; sourceTree = "<group>"; };
+		A20000000000000000009022 /* AllPagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllPagesView.swift; sourceTree = "<group>"; };
+		A20000000000000000009023 /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
+		A20000000000000000009024 /* AssetRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRow.swift; sourceTree = "<group>"; };
+		A20000000000000000009025 /* AssetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailView.swift; sourceTree = "<group>"; };
+		A20000000000000000009026 /* SavedPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPDFView.swift; sourceTree = "<group>"; };
+		A20000000000000000009027 /* PageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageRow.swift; sourceTree = "<group>"; };
+		A20000000000000000009028 /* BookmarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkButton.swift; sourceTree = "<group>"; };
+		A20000000000000000009029 /* ArticleTrailTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTrailTarget.swift; sourceTree = "<group>"; };
+		A20000000000000000009030 /* SavedArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedArticleView.swift; sourceTree = "<group>"; };
+		A20000000000000000009031 /* ViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHelpers.swift; sourceTree = "<group>"; };
+		A20000000000000000009032 /* GameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailView.swift; sourceTree = "<group>"; };
+		A20000000000000000009033 /* GameDetailSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailSections.swift; sourceTree = "<group>"; };
+		A20000000000000000009034 /* GameDetailHero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailHero.swift; sourceTree = "<group>"; };
+		A20000000000000000009035 /* PageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailView.swift; sourceTree = "<group>"; };
+		A20000000000000000009036 /* PageDetailNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailNavigation.swift; sourceTree = "<group>"; };
+		A20000000000000000009037 /* LibraryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryModels.swift; sourceTree = "<group>"; };
+		A20000000000000000009038 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
+		A20000000000000000009039 /* ContentSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSync.swift; sourceTree = "<group>"; };
+
+		A20000000000000000009043 /* SiteHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteHTTPError.swift; sourceTree = "<group>"; };
+		A20000000000000000009044 /* ArticleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleModels.swift; sourceTree = "<group>"; };
+		A20000000000000000009045 /* ArticleTranslation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTranslation.swift; sourceTree = "<group>"; };
+		A20000000000000000009057 /* ArticlePresentationMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlePresentationMapper.swift; sourceTree = "<group>"; };
+		A20000000000000000009058 /* GameLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009059 /* GameNavigationRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNavigationRowViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009060 /* GameArtworkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameArtworkViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009061 /* PageRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageRowViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009062 /* AssetRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRowViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009063 /* FatesClassModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassModels.swift; sourceTree = "<group>"; };
+		A20000000000000000009064 /* FatesClassesParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassesParser.swift; sourceTree = "<group>"; };
+		A20000000000000000009065 /* FatesClassesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassesView.swift; sourceTree = "<group>"; };
+		A20000000000000000009066 /* FatesClassesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassesViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009067 /* AwakeningClassesParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwakeningClassesParser.swift; sourceTree = "<group>"; };
+		A20000000000000000009068 /* ClassSchemeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSchemeModels.swift; sourceTree = "<group>"; };
+		A20000000000000000009069 /* SacredStonesClassSchemeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SacredStonesClassSchemeParser.swift; sourceTree = "<group>"; };
+		A20000000000000000009073 /* ClassesParserFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesParserFactory.swift; sourceTree = "<group>"; };
+		A20000000000000000009070 /* ClassSchemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSchemeView.swift; sourceTree = "<group>"; };
+		A20000000000000000009071 /* ClassSchemeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSchemeViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000009072 /* TwoStageClassGuideParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoStageClassGuideParser.swift; sourceTree = "<group>"; };
+		A20000000000000000009046 /* NativeArticleParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeArticleParser.swift; sourceTree = "<group>"; };
+		A20000000000000000009047 /* NativeArticleTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeArticleTree.swift; sourceTree = "<group>"; };
+		A20000000000000000009048 /* NativeArticleBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeArticleBlocks.swift; sourceTree = "<group>"; };
+		A20000000000000000009049 /* NativeArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeArticleView.swift; sourceTree = "<group>"; };
+		A20000000000000000009050 /* FrozenArticleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrozenArticleTable.swift; sourceTree = "<group>"; };
+		A20000000000000000009051 /* TableCellText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellText.swift; sourceTree = "<group>"; };
+		A20000000000000000009052 /* TableCellImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellImages.swift; sourceTree = "<group>"; };
+		A20000000000000000009053 /* LocalImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalImageLoader.swift; sourceTree = "<group>"; };
+		A20000000000000000009054 /* ArticleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleImageView.swift; sourceTree = "<group>"; };
+
+		A20000000000000000009056 /* SerenesForestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenesForestApp.swift; sourceTree = "<group>"; };
+		A29999999999999999999990 /* PageCategoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCategoryMapper.swift; sourceTree = "<group>"; };
+		A29999999999999999999991 /* ContentPageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPageMapper.swift; sourceTree = "<group>"; };
+		A28888888888888888880000 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880001 /* WikiLibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiLibraryViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880002 /* GamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880003 /* AllPagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllPagesViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880004 /* SavedPagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPagesViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880005 /* GameDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880006 /* GameNewsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNewsFeedViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880007 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880008 /* GuidesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidesViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880009 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880010 /* PageDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDetailViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880011 /* MediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewModel.swift; sourceTree = "<group>"; };
+		A28888888888888888880012 /* AssetDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailViewModel.swift; sourceTree = "<group>"; };
+		A27777777777777777777770 /* PageDetailViewModel+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PageDetailViewModel+Loading.swift"; sourceTree = "<group>"; };
+		A26666666666666666666660 /* LibraryTranslationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTranslationService.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A50000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A30000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A30000000000000000000002 /* Sources */,
+				A30000000000000000000004 /* Resources */,
+				A30000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A30000000000000000000002 /* Sources */ = {isa = PBXGroup; children = (A30000000000000000009000 /* App */, A30000000000000000009001 /* Data */, A30000000000000000009002 /* Domain */, A30000000000000000009003 /* Mapping */, A30000000000000000009004 /* Parsing */, A30000000000000000009015 /* Shared */, A39999999999999999999999 /* Screens */); path = Sources; sourceTree = "<group>"; };
+		A30000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000005 /* SerenesForest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000004 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000018 /* PreloadedLibrary */,
+				A20000000000000000000016 /* GFDL-1.3.txt */,
+				A20000000000000000000010 /* GameCovers */,
+				A20000000000000000000012 /* AppIcon.xcassets */,
+				A90000000000000000000001 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A30000000000000000009000 /* App */ = {isa = PBXGroup; children = (A20000000000000000009056 /* SerenesForestApp.swift */); path = App; sourceTree = "<group>"; };
+		A30000000000000000009001 /* Data */ = {isa = PBXGroup; children = (A26666666666666666666660 /* LibraryTranslationService.swift */, A20000000000000000009038 /* Catalog.swift */, A20000000000000000009039 /* ContentSync.swift */, A20000000000000000009053 /* LocalImageLoader.swift */); path = Data; sourceTree = "<group>"; };
+		A30000000000000000009002 /* Domain */ = {isa = PBXGroup; children = (A20000000000000000009037 /* LibraryModels.swift */, A20000000000000000009043 /* SiteHTTPError.swift */, A20000000000000000009044 /* ArticleModels.swift */, A20000000000000000009063 /* FatesClassModels.swift */, A20000000000000000009068 /* ClassSchemeModels.swift */); path = Domain; sourceTree = "<group>"; };
+		A30000000000000000009003 /* Mapping */ = {isa = PBXGroup; children = (A29999999999999999999991 /* ContentPageMapper.swift */, A29999999999999999999990 /* PageCategoryMapper.swift */, A25555555555555555555550 /* GameOverviewMapper.swift */, A20000000000000000009045 /* ArticleTranslation.swift */, A20000000000000000009057 /* ArticlePresentationMapper.swift */); path = Mapping; sourceTree = "<group>"; };
+		A30000000000000000009004 /* Parsing */ = {isa = PBXGroup; children = (A20000000000000000009046 /* NativeArticleParser.swift */, A20000000000000000009047 /* NativeArticleTree.swift */, A20000000000000000009048 /* NativeArticleBlocks.swift */, A20000000000000000009073 /* ClassesParserFactory.swift */, A20000000000000000009064 /* FatesClassesParser.swift */, A20000000000000000009067 /* AwakeningClassesParser.swift */, A20000000000000000009069 /* SacredStonesClassSchemeParser.swift */, A20000000000000000009072 /* TwoStageClassGuideParser.swift */, ); path = Parsing; sourceTree = "<group>"; };
+		A30000000000000000009005 /* Screens/Article */ = {isa = PBXGroup; children = (A27777777777777777777770 /* PageDetailViewModel+Loading.swift */, A28888888888888888880010 /* PageDetailViewModel.swift */, A20000000000000000009027 /* PageRow.swift */, A20000000000000000009061 /* PageRowViewModel.swift */, A20000000000000000009028 /* BookmarkButton.swift */, A20000000000000000009029 /* ArticleTrailTarget.swift */, A20000000000000000009030 /* SavedArticleView.swift */, A20000000000000000009035 /* PageDetailView.swift */, A20000000000000000009036 /* PageDetailNavigation.swift */, A20000000000000000009049 /* NativeArticleView.swift */, A20000000000000000009065 /* FatesClassesView.swift */, A20000000000000000009066 /* FatesClassesViewModel.swift */, A20000000000000000009070 /* ClassSchemeView.swift */, A20000000000000000009071 /* ClassSchemeViewModel.swift */, A20000000000000000009050 /* FrozenArticleTable.swift */, A20000000000000000009051 /* TableCellText.swift */, A20000000000000000009052 /* TableCellImages.swift */, A20000000000000000009054 /* ArticleImageView.swift */); path = Article; sourceTree = "<group>"; };
+		A30000000000000000009006 /* Screens/Discover */ = {isa = PBXGroup; children = (A25555555555555555555551 /* DiscoverViewModel.swift */, A20000000000000000009005 /* DiscoverView.swift */); path = Discover; sourceTree = "<group>"; };
+		A30000000000000000009007 /* Screens/Game */ = {isa = PBXGroup; children = (A28888888888888888880005 /* GameDetailViewModel.swift */, A20000000000000000009008 /* GameModels.swift */, A20000000000000000009009 /* GameNavigationRow.swift */, A20000000000000000009059 /* GameNavigationRowViewModel.swift */, A20000000000000000009010 /* GameArtworkView.swift */, A20000000000000000009060 /* GameArtworkViewModel.swift */, A20000000000000000009011 /* ArtworkThumbnail.swift */, A20000000000000000009012 /* GameAboutView.swift */, A20000000000000000009013 /* GameTopicItemsView.swift */, A20000000000000000009014 /* GameTopicLinksView.swift */, A20000000000000000009015 /* GameLinkView.swift */, A20000000000000000009058 /* GameLinkViewModel.swift */, A20000000000000000009032 /* GameDetailView.swift */, A20000000000000000009033 /* GameDetailSections.swift */, A20000000000000000009034 /* GameDetailHero.swift */); path = Game; sourceTree = "<group>"; };
+		A30000000000000000009008 /* Screens/Guides */ = {isa = PBXGroup; children = (A28888888888888888880008 /* GuidesViewModel.swift */, A20000000000000000009018 /* GuideModels.swift */, A20000000000000000009019 /* GuidesView.swift */); path = Guides; sourceTree = "<group>"; };
+		A30000000000000000009009 /* Screens/Library */ = {isa = PBXGroup; children = (A28888888888888888880004 /* SavedPagesViewModel.swift */, A28888888888888888880003 /* AllPagesViewModel.swift */, A28888888888888888880002 /* GamesViewModel.swift */, A20000000000000000009006 /* GamesView.swift */, A20000000000000000009007 /* GameCard.swift */, A20000000000000000009021 /* SavedPagesView.swift */, A20000000000000000009022 /* AllPagesView.swift */); path = Library; sourceTree = "<group>"; };
+		A30000000000000000009010 /* Screens/Media */ = {isa = PBXGroup; children = (A28888888888888888880012 /* AssetDetailViewModel.swift */, A28888888888888888880011 /* MediaViewModel.swift */, A20000000000000000009023 /* MediaView.swift */, A20000000000000000009024 /* AssetRow.swift */, A20000000000000000009062 /* AssetRowViewModel.swift */, A20000000000000000009025 /* AssetDetailView.swift */, A20000000000000000009026 /* SavedPDFView.swift */); path = Media; sourceTree = "<group>"; };
+		A30000000000000000009011 /* Screens/News */ = {isa = PBXGroup; children = (A28888888888888888880007 /* NewsViewModel.swift */, A28888888888888888880006 /* GameNewsFeedViewModel.swift */, A20000000000000000009016 /* NewsView.swift */, A20000000000000000009017 /* GameNewsFeedView.swift */); path = News; sourceTree = "<group>"; };
+		A30000000000000000009012 /* Screens/Root */ = {isa = PBXGroup; children = (A28888888888888888880009 /* RootViewModel.swift */, A20000000000000000009003 /* RootView.swift */); path = Root; sourceTree = "<group>"; };
+		A30000000000000000009013 /* Screens/Settings */ = {isa = PBXGroup; children = (A28888888888888888880000 /* SettingsViewModel.swift */, A20000000000000000009004 /* SettingsView.swift */); path = Settings; sourceTree = "<group>"; };
+		A30000000000000000009014 /* Screens/Wiki */ = {isa = PBXGroup; children = (A28888888888888888880001 /* WikiLibraryViewModel.swift */, A20000000000000000009020 /* WikiLibraryView.swift */); path = Wiki; sourceTree = "<group>"; };
+		A30000000000000000009015 /* Shared */ = {isa = PBXGroup; children = (A20000000000000000009000 /* DesignSystem.swift */, A20000000000000000009001 /* ImagesAndComponents.swift */, A20000000000000000009002 /* GameVisuals.swift */, A20000000000000000009031 /* ViewHelpers.swift */); path = Shared; sourceTree = "<group>"; };
+		A39999999999999999999999 /* Screens */ = {isa = PBXGroup; children = (A30000000000000000009005 /* Article */, A30000000000000000009006 /* Discover */, A30000000000000000009007 /* Game */, A30000000000000000009008 /* Guides */, A30000000000000000009009 /* Library */, A30000000000000000009010 /* Media */, A30000000000000000009011 /* News */, A30000000000000000009012 /* Root */, A30000000000000000009013 /* Settings */, A30000000000000000009014 /* Wiki */); path = Screens; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A49999999999999999999990 /* SerenesParsing */ = {isa = XCLocalSwiftPackageReference; relativePath = Sources/LocalPackages/SerenesParsing; };
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A49999999999999999999991 /* SerenesParsing */ = {isa = XCSwiftPackageProductDependency; package = A49999999999999999999990 /* SerenesParsing */; productName = SerenesParsing; };
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin PBXNativeTarget section */
+		A40000000000000000000001 /* SerenesForest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A80000000000000000000002 /* Build configuration list for PBXNativeTarget "SerenesForest" */;
+			buildPhases = (
+				A50000000000000000000001 /* Sources */,
+				A50000000000000000000002 /* Frameworks */,
+				A50000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SerenesForest;
+			productName = SerenesForest;
+			productReference = A20000000000000000000005 /* SerenesForest.app */;
+			packageProductDependencies = (A49999999999999999999991 /* SerenesParsing */); productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A60000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A40000000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = A80000000000000000000001 /* Build configuration list for PBXProject "SerenesForest" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				ru,
+				Base,
+			);
+			mainGroup = A30000000000000000000001;
+			productRefGroup = A30000000000000000000003 /* Products */;
+			projectDirPath = "";
+			packageReferences = (A49999999999999999999990 /* SerenesParsing */); projectRoot = "";
+			targets = (
+				A40000000000000000000001 /* SerenesForest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A50000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000018 /* PreloadedLibrary in Resources */,
+				A10000000000000000000016 /* GFDL-1.3.txt in Resources */,
+				A10000000000000000000010 /* GameCovers in Resources */,
+				A10000000000000000000012 /* AppIcon.xcassets in Resources */,
+				A10000000000000000000013 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A50000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A15555555555555555555550 /* GameOverviewMapper.swift in Sources */, A15555555555555555555551 /* DiscoverViewModel.swift in Sources */, A16666666666666666666660 /* LibraryTranslationService.swift in Sources */, A17777777777777777777770 /* PageDetailViewModel+Loading.swift in Sources */, A18888888888888888880012 /* AssetDetailViewModel.swift in Sources */, A18888888888888888880011 /* MediaViewModel.swift in Sources */, A18888888888888888880010 /* PageDetailViewModel.swift in Sources */, A18888888888888888880009 /* RootViewModel.swift in Sources */, A18888888888888888880008 /* GuidesViewModel.swift in Sources */, A18888888888888888880007 /* NewsViewModel.swift in Sources */, A18888888888888888880006 /* GameNewsFeedViewModel.swift in Sources */, A18888888888888888880005 /* GameDetailViewModel.swift in Sources */, A18888888888888888880004 /* SavedPagesViewModel.swift in Sources */, A18888888888888888880003 /* AllPagesViewModel.swift in Sources */, A18888888888888888880002 /* GamesViewModel.swift in Sources */, A18888888888888888880001 /* WikiLibraryViewModel.swift in Sources */, A18888888888888888880000 /* SettingsViewModel.swift in Sources */, A19999999999999999999991 /* ContentPageMapper.swift in Sources */, A19999999999999999999990 /* PageCategoryMapper.swift in Sources */, A10000000000000000009000 /* DesignSystem.swift in Sources */, A10000000000000000009001 /* ImagesAndComponents.swift in Sources */, A10000000000000000009002 /* GameVisuals.swift in Sources */, A10000000000000000009003 /* RootView.swift in Sources */, A10000000000000000009004 /* SettingsView.swift in Sources */, A10000000000000000009005 /* DiscoverView.swift in Sources */, A10000000000000000009006 /* GamesView.swift in Sources */, A10000000000000000009007 /* GameCard.swift in Sources */, A10000000000000000009008 /* GameModels.swift in Sources */, A10000000000000000009009 /* GameNavigationRow.swift in Sources */, A10000000000000000009059 /* GameNavigationRowViewModel.swift in Sources */, A10000000000000000009010 /* GameArtworkView.swift in Sources */, A10000000000000000009060 /* GameArtworkViewModel.swift in Sources */, A10000000000000000009011 /* ArtworkThumbnail.swift in Sources */, A10000000000000000009012 /* GameAboutView.swift in Sources */, A10000000000000000009013 /* GameTopicItemsView.swift in Sources */, A10000000000000000009014 /* GameTopicLinksView.swift in Sources */, A10000000000000000009015 /* GameLinkView.swift in Sources */, A10000000000000000009058 /* GameLinkViewModel.swift in Sources */, A10000000000000000009016 /* NewsView.swift in Sources */, A10000000000000000009017 /* GameNewsFeedView.swift in Sources */, A10000000000000000009018 /* GuideModels.swift in Sources */, A10000000000000000009019 /* GuidesView.swift in Sources */, A10000000000000000009020 /* WikiLibraryView.swift in Sources */, A10000000000000000009021 /* SavedPagesView.swift in Sources */, A10000000000000000009022 /* AllPagesView.swift in Sources */, A10000000000000000009023 /* MediaView.swift in Sources */, A10000000000000000009024 /* AssetRow.swift in Sources */, A10000000000000000009062 /* AssetRowViewModel.swift in Sources */, A10000000000000000009025 /* AssetDetailView.swift in Sources */, A10000000000000000009026 /* SavedPDFView.swift in Sources */, A10000000000000000009027 /* PageRow.swift in Sources */, A10000000000000000009061 /* PageRowViewModel.swift in Sources */, A10000000000000000009028 /* BookmarkButton.swift in Sources */, A10000000000000000009029 /* ArticleTrailTarget.swift in Sources */, A10000000000000000009030 /* SavedArticleView.swift in Sources */, A10000000000000000009031 /* ViewHelpers.swift in Sources */, A10000000000000000009032 /* GameDetailView.swift in Sources */, A10000000000000000009033 /* GameDetailSections.swift in Sources */, A10000000000000000009034 /* GameDetailHero.swift in Sources */, A10000000000000000009035 /* PageDetailView.swift in Sources */, A10000000000000000009036 /* PageDetailNavigation.swift in Sources */, A10000000000000000009037 /* LibraryModels.swift in Sources */, A10000000000000000009038 /* Catalog.swift in Sources */, A10000000000000000009039 /* ContentSync.swift in Sources */, A10000000000000000009043 /* SiteHTTPError.swift in Sources */, A10000000000000000009044 /* ArticleModels.swift in Sources */, A10000000000000000009063 /* FatesClassModels.swift in Sources */, A10000000000000000009068 /* ClassSchemeModels.swift in Sources */, A10000000000000000009045 /* ArticleTranslation.swift in Sources */, A10000000000000000009057 /* ArticlePresentationMapper.swift in Sources */, A10000000000000000009046 /* NativeArticleParser.swift in Sources */, A10000000000000000009047 /* NativeArticleTree.swift in Sources */, A10000000000000000009048 /* NativeArticleBlocks.swift in Sources */, A10000000000000000009073 /* ClassesParserFactory.swift in Sources */, A10000000000000000009064 /* FatesClassesParser.swift in Sources */, A10000000000000000009067 /* AwakeningClassesParser.swift in Sources */, A10000000000000000009069 /* SacredStonesClassSchemeParser.swift in Sources */, A10000000000000000009072 /* TwoStageClassGuideParser.swift in Sources */, A10000000000000000009049 /* NativeArticleView.swift in Sources */, A10000000000000000009065 /* FatesClassesView.swift in Sources */, A10000000000000000009066 /* FatesClassesViewModel.swift in Sources */, A10000000000000000009070 /* ClassSchemeView.swift in Sources */, A10000000000000000009071 /* ClassSchemeViewModel.swift in Sources */, A10000000000000000009050 /* FrozenArticleTable.swift in Sources */, A10000000000000000009051 /* TableCellText.swift in Sources */, A10000000000000000009052 /* TableCellImages.swift in Sources */, A10000000000000000009053 /* LocalImageLoader.swift in Sources */, A10000000000000000009054 /* ArticleImageView.swift in Sources */, A10000000000000000009056 /* SerenesForestApp.swift in Sources */); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A90000000000000000000001 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A20000000000000000000013 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A70000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				SDKROOT = auto;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A70000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				SDKROOT = auto;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A70000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Serenes Forest";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.SerenesForestCompanion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A70000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Serenes Forest";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.SerenesForestCompanion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A80000000000000000000001 /* Build configuration list for PBXProject "SerenesForest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000001 /* Debug */,
+				A70000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A80000000000000000000002 /* Build configuration list for PBXNativeTarget "SerenesForest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000003 /* Debug */,
+				A70000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A60000000000000000000001 /* Project object */;
+}

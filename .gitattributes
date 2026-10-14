@@ -1,0 +1,2 @@
+Resources/PreloadedLibrary/Library.store filter=lfs diff=lfs merge=lfs -text
+Resources/PreloadedLibrary/.Library_SUPPORT/_EXTERNAL_DATA/* filter=lfs diff=lfs merge=lfs -text
