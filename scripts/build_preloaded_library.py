@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the distributable SwiftData store from temporary BuildContent inputs."""
+"""Build the text library and asset URL index from temporary BuildContent inputs."""
 
 import os
 import json
@@ -43,6 +43,9 @@ def validate(store: Path, expected_pages: int, expected_assets: int) -> tuple[in
         pages = database.execute("SELECT count(*) FROM ZCONTENTPAGE").fetchone()[0]
         assets = database.execute("SELECT count(*) FROM ZCONTENTASSET").fetchone()[0]
         games = database.execute("SELECT count(*) FROM ZGAME").fetchone()[0]
+        stored_images = database.execute(
+            "SELECT count(*) FROM ZCONTENTASSET WHERE ZDATA IS NOT NULL OR ZFETCHEDAT IS NOT NULL"
+        ).fetchone()[0]
         database.execute("PRAGMA wal_checkpoint(TRUNCATE)")
     finally:
         database.close()
@@ -51,6 +54,8 @@ def validate(store: Path, expected_pages: int, expected_assets: int) -> tuple[in
             f"Incomplete library: {pages}/{expected_pages} pages, "
             f"{assets}/{expected_assets} assets, {games}/22 games"
         )
+    if stored_images:
+        raise RuntimeError(f"Bundled library still contains {stored_images} downloaded images")
     return pages, assets
 
 
@@ -66,12 +71,14 @@ def build() -> None:
         optimized_content.mkdir()
         for name in ("SeedContent.json", "WikiLibrary.json", "GameNews.json"):
             (optimized_content / name).symlink_to(CONTENT / name)
-        optimizer = work / "optimize_build_assets"
-        subprocess.run(["xcrun", "swiftc", str(ROOT / "scripts" / "optimize_build_assets.swift"),
-                        "-o", str(optimizer)], cwd=ROOT, check=True)
         for name in ("SeedAssets.jsonl", "WikiAssets.jsonl"):
-            subprocess.run([str(optimizer), str(CONTENT / name), str(optimized_content / name)],
-                           cwd=ROOT, check=True)
+            with (CONTENT / name).open(encoding="utf-8") as source, \
+                    (optimized_content / name).open("w", encoding="utf-8") as target:
+                for line in source:
+                    if line.strip():
+                        record = json.loads(line)
+                        record.pop("dataBase64", None)
+                        target.write(json.dumps(record, ensure_ascii=False) + "\n")
         derived = work / "DerivedData"
         store = work / "Library.store"
         subprocess.run(
@@ -88,15 +95,10 @@ def build() -> None:
         subprocess.run([str(executable)], cwd=ROOT, env=environment, check=True)
 
         pages, assets = validate(store, expected_pages, expected_assets)
-        external = work / ".Library_SUPPORT"
-        if not external.is_dir():
-            raise RuntimeError("SwiftData external asset storage was not generated")
-
         stage = Path(tempfile.mkdtemp(prefix=".preloaded-next-", dir=RESOURCE.parent))
         backup = RESOURCE.with_name("PreloadedLibrary.previous")
         try:
             shutil.copy2(store, stage / "Library.store")
-            shutil.copytree(external, stage / external.name)
             if backup.exists():
                 raise RuntimeError(f"Remove stale backup before rebuilding: {backup}")
             if RESOURCE.exists():

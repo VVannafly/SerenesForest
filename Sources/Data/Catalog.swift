@@ -286,8 +286,6 @@ actor BuildAssetImporter {
         let title: String
         let sourcePageURL: String
         let mimeType: String
-        let dataBase64: String
-        let archivedAt: String
     }
 
     private let container: ModelContainer
@@ -312,10 +310,6 @@ actor BuildAssetImporter {
         let lookupContext = ModelContext(container)
         var known = Set(try lookupContext.fetch(FetchDescriptor<ContentAsset>()).map(\.url))
         let decoder = JSONDecoder()
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyyMMddHHmmss"
         let handle = try FileHandle(forReadingFrom: url)
         defer { try? handle.close() }
         let newline = Data([10])
@@ -332,12 +326,9 @@ actor BuildAssetImporter {
                 lineNumber += 1
                 if lineNumber > completedLines && !line.isEmpty {
                     let record = try decoder.decode(SeedAsset.self, from: line)
-                    if known.insert(record.url).inserted,
-                       let data = Data(base64Encoded: record.dataBase64) {
+                    if known.insert(record.url).inserted {
                         let asset = ContentAsset(url: record.url, title: record.title, sourcePageURL: record.sourcePageURL)
                         asset.mimeType = record.mimeType
-                        asset.data = data
-                        asset.fetchedAt = formatter.date(from: record.archivedAt) ?? .distantPast
                         batchContext.insert(asset)
                     }
                 }
@@ -354,12 +345,9 @@ actor BuildAssetImporter {
             lineNumber += 1
             if lineNumber > completedLines {
                 let record = try decoder.decode(SeedAsset.self, from: buffer)
-                if known.insert(record.url).inserted,
-                   let data = Data(base64Encoded: record.dataBase64) {
+                if known.insert(record.url).inserted {
                     let asset = ContentAsset(url: record.url, title: record.title, sourcePageURL: record.sourcePageURL)
                     asset.mimeType = record.mimeType
-                    asset.data = data
-                    asset.fetchedAt = formatter.date(from: record.archivedAt) ?? .distantPast
                     batchContext.insert(asset)
                 }
             }

@@ -57,6 +57,12 @@ actor ArticleDownloadLimiter {
 
 actor LocalImageLoader {
     static let shared = LocalImageLoader()
+    private enum Constants {
+        static let archivePrefix = "https://web.archive.org/web/20261001id_/"
+        static let userAgent = "SerenesForestCompanion/1.0 (personal reference library)"
+        static let imageMimePrefix = "image/"
+        static let maximumBytes: Int64 = 20_000_000
+    }
     private struct Flight {
         let task: Task<CGImage?, Never>
         var waiters: Set<UUID>
@@ -83,47 +89,63 @@ actor LocalImageLoader {
 
     func missingAssetImage(assetURL: String, maxPixelSize: Int, container: ModelContainer) async -> CGImage? {
         guard let url = URL(string: assetURL), SiteScope.canonical(url) != nil,
-              SiteScope.isAsset(url),
-              failedDownloads[assetURL].map({ Date.now.timeIntervalSince($0) > 3600 }) ?? true else { return nil }
+              SiteScope.isAsset(url) else { return nil }
+        let context = ModelContext(container)
+        let descriptor = FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == assetURL })
+        if let existing = try? context.fetch(descriptor).first,
+           let fetchedAt = existing.fetchedAt {
+            return await assetImage(assetURL: assetURL, fetchedAt: fetchedAt,
+                                    maxPixelSize: maxPixelSize, container: container)
+        }
+        guard failedDownloads[assetURL].map({ Date.now.timeIntervalSince($0) > 3600 }) ?? true else { return nil }
         return await loadRemote(key: "remote:\(assetURL)|\(maxPixelSize)", assetURL: assetURL) {
             await ArticleDownloadLimiter.shared.acquire()
             defer { Task { await ArticleDownloadLimiter.shared.release() } }
             guard !Task.isCancelled else { return nil }
-            do {
-                var request = URLRequest(url: url)
-                request.timeoutInterval = 15
-                let (file, response) = try await URLSession.shared.download(for: request)
-                guard let http = response as? HTTPURLResponse, http.statusCode == 200,
-                      let mime = response.mimeType, mime.hasPrefix("image/"),
-                      let size = (try FileManager.default.attributesOfItem(atPath: file.path)[.size] as? NSNumber)?.int64Value,
-                      size > 0, size <= 20_000_000 else { return nil }
-                let data = try Data(contentsOf: file, options: .mappedIfSafe)
-                guard let source = CGImageSourceCreateWithData(data as CFData,
-                    [kCGImageSourceShouldCache: false] as CFDictionary),
-                      let image = CGImageSourceCreateThumbnailAtIndex(source, 0, [
-                        kCGImageSourceCreateThumbnailFromImageAlways: true,
-                        kCGImageSourceThumbnailMaxPixelSize: maxPixelSize,
-                        kCGImageSourceShouldCacheImmediately: true
-                      ] as CFDictionary) else { return nil }
-                let context = ModelContext(container)
-                let descriptor = FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == assetURL })
-                let asset: ContentAsset
-                if let existing = try context.fetch(descriptor).first {
-                    asset = existing
-                } else {
-                    asset = ContentAsset(url: assetURL, title: url.lastPathComponent, sourcePageURL: "")
-                    context.insert(asset)
+            let archive = URL(string: Constants.archivePrefix + assetURL)
+            let candidates = url.host == "serenesforest.net" ? [url, archive].compactMap { $0 } : [url]
+            for candidate in candidates {
+                if Task.isCancelled { return nil }
+                do {
+                    var request = URLRequest(url: candidate)
+                    request.timeoutInterval = candidate == url ? 15 : 30
+                    request.setValue(Constants.userAgent, forHTTPHeaderField: "User-Agent")
+                    let (file, response) = try await URLSession.shared.download(for: request)
+                    guard let http = response as? HTTPURLResponse, http.statusCode == 200,
+                          let responseURL = http.url,
+                          (candidate == url ? SiteScope.canonical(responseURL) != nil : responseURL.host == "web.archive.org"),
+                          let mime = response.mimeType, mime.hasPrefix(Constants.imageMimePrefix),
+                          let size = (try FileManager.default.attributesOfItem(atPath: file.path)[.size] as? NSNumber)?.int64Value,
+                          size > 0, size <= Constants.maximumBytes else { continue }
+                    let data = try Data(contentsOf: file, options: .mappedIfSafe)
+                    guard let source = CGImageSourceCreateWithData(data as CFData,
+                        [kCGImageSourceShouldCache: false] as CFDictionary),
+                          let image = CGImageSourceCreateThumbnailAtIndex(source, 0, [
+                            kCGImageSourceCreateThumbnailFromImageAlways: true,
+                            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize,
+                            kCGImageSourceShouldCacheImmediately: true
+                          ] as CFDictionary) else { continue }
+                    let context = ModelContext(container)
+                    let descriptor = FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == assetURL })
+                    let asset: ContentAsset
+                    if let existing = try context.fetch(descriptor).first {
+                        asset = existing
+                    } else {
+                        asset = ContentAsset(url: assetURL, title: url.lastPathComponent, sourcePageURL: "")
+                        context.insert(asset)
+                    }
+                    asset.data = data
+                    asset.mimeType = mime
+                    asset.fetchedAt = .now
+                    asset.lastAttempt = .now
+                    asset.lastError = nil
+                    try context.save()
+                    return image
+                } catch {
+                    continue
                 }
-                asset.data = data
-                asset.mimeType = mime
-                asset.fetchedAt = .now
-                asset.lastAttempt = .now
-                asset.lastError = nil
-                try context.save()
-                return image
-            } catch {
-                return nil
             }
+            return nil
         }
     }
 

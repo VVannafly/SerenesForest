@@ -22,7 +22,7 @@ For a physical device, choose your Apple development team and set your own bundl
 - `Sources/Data`: preloaded catalog, sync, translation, and image loading.
 - `Sources/LocalPackages/SerenesParsing`: standalone parsing module.
 
-Run `swift test --package-path Sources/LocalPackages/SerenesParsing` for the module tests. The full article and media library lives in `Resources/PreloadedLibrary`; source JSON build inputs are generated separately and are not part of the repository.
+Run `swift test --package-path Sources/LocalPackages/SerenesParsing` for the module tests. The article library and media URL index live in `Resources/PreloadedLibrary`; images cache on demand; source JSON build inputs are generated separately and are not part of the repository.
 
 ## Content attribution
 

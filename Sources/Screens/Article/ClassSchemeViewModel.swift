@@ -27,6 +27,6 @@ final class ClassSchemeViewModel {
     }
 
     func availableIcons(_ urls: [URL]) -> [URL] {
-        urls.filter { fetchedAt(for: $0) != nil }
+        urls
     }
 }

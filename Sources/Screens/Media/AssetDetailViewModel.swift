@@ -18,10 +18,23 @@ final class AssetDetailViewModel {
             localFile = nil
             player = nil
             loadFailed = false
-            guard let fetchedAt = asset.fetchedAt else { return }
             let assetURL = asset.url
             let mimeType = asset.mimeType ?? ""
             let container = context.container
+            if mimeType.hasPrefix("image/") {
+                if let fetchedAt = asset.fetchedAt {
+                    image = await LocalImageLoader.shared.assetImage(
+                        assetURL: assetURL, fetchedAt: fetchedAt, maxPixelSize: 2400, container: container
+                    )
+                } else {
+                    image = await LocalImageLoader.shared.missingAssetImage(
+                        assetURL: assetURL, maxPixelSize: 2400, container: container
+                    )
+                }
+                loadFailed = image == nil
+                return
+            }
+            guard asset.fetchedAt != nil else { return }
             let fileTask = Task.detached(priority: .utility) { () -> (Data?, URL?) in
                 let context = ModelContext(container)
                 let descriptor = FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == assetURL })
@@ -32,13 +45,6 @@ final class AssetDetailViewModel {
                     .appendingPathExtension(source.pathExtension)
                 guard (try? data.write(to: file, options: .atomic)) != nil else { return (nil, nil) }
                 return (mimeType == "application/pdf" ? data : nil, file)
-            }
-            if mimeType.hasPrefix("image/") {
-                let loaded = await LocalImageLoader.shared.assetImage(
-                    assetURL: assetURL, fetchedAt: fetchedAt, maxPixelSize: 2400, container: container
-                )
-                guard !Task.isCancelled else { fileTask.cancel(); return }
-                image = loaded
             }
             let (loadedPDF, file) = await withTaskCancellationHandler {
                 await fileTask.value
@@ -51,6 +57,6 @@ final class AssetDetailViewModel {
             if let file, mimeType.hasPrefix("audio/") || mimeType.hasPrefix("video/") {
                 player = AVPlayer(url: file)
             }
-            loadFailed = file == nil || (mimeType.hasPrefix("image/") && image == nil)
+            loadFailed = file == nil
     }
 }

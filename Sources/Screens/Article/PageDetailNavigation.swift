@@ -28,8 +28,7 @@ extension PageDetailView {
         }
         let canonical = url.absoluteString
         if SiteScope.isAsset(url),
-           let asset = try? context.fetch(FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == canonical })).first,
-           asset.fetchedAt != nil {
+           let asset = try? context.fetch(FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == canonical })).first {
             viewModel.linkedAsset = asset
         } else if SiteScope.isPage(url),
                   let saved = try? context.fetch(FetchDescriptor<ContentPage>(predicate: #Predicate { $0.url == canonical })).first,

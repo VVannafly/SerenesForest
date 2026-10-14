@@ -16,9 +16,14 @@ struct ArtworkThumbnail: View {
         .frame(maxWidth: .infinity)
         .clipped()
         .task(id: asset.fetchedAt) {
-            guard let fetchedAt = asset.fetchedAt else { return }
-            image = await LocalImageLoader.shared.assetImage(
-                assetURL: asset.url, fetchedAt: fetchedAt, maxPixelSize: 240, container: context.container)
+            image = nil
+            if let fetchedAt = asset.fetchedAt {
+                image = await LocalImageLoader.shared.assetImage(
+                    assetURL: asset.url, fetchedAt: fetchedAt, maxPixelSize: 240, container: context.container)
+            } else {
+                image = await LocalImageLoader.shared.missingAssetImage(
+                    assetURL: asset.url, maxPixelSize: 240, container: context.container)
+            }
         }
     }
 }

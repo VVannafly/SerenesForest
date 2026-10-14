@@ -22,7 +22,7 @@ struct AssetDetailView: View {
 
     var body: some View {
         VStack(spacing: 18) {
-            if asset.fetchedAt != nil {
+            if asset.fetchedAt != nil || asset.mimeType?.hasPrefix("image/") == true {
                 if asset.mimeType?.hasPrefix("image/") == true {
                     if let image = viewModel.image { Image(decorative: image, scale: 1).resizable().scaledToFit() }
                     else if viewModel.loadFailed { ContentUnavailableView(Constants.imageUnavailable, systemImage: "photo") }

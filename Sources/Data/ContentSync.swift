@@ -44,14 +44,6 @@ final class ContentSync {
             for item in discovered.pages { context.insert(item) }
             for item in discovered.assets { context.insert(item) }
             try context.save()
-            let imageURLs = Set(parsed.images.map(\.absoluteString))
-            let pendingImages = try context.fetch(FetchDescriptor<ContentAsset>()).filter {
-                imageURLs.contains($0.url) && $0.fetchedAt == nil
-            }
-            for asset in pendingImages where !stopRequested && !Task.isCancelled {
-                progress = "Saving images for \(page.title)"
-                try? await downloadAsset(asset)
-            }
         } catch {
             errorMessage = error.localizedDescription
             try? context.save()
