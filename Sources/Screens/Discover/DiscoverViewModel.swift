@@ -1,11 +1,13 @@
 import Foundation
 import Observation
 import SerenesParsing
+import SwiftData
 
 @MainActor @Observable
 final class DiscoverViewModel {
     private static let newsLimit = 3
     private static let featuredGameLimit = 8
+    private(set) var downloadedArticleCount = 0
 
     func availableGames(from games: [Game]) -> [Game] {
         games.filter { !$0.sourceURL.contains("/wiki/") }
@@ -21,8 +23,9 @@ final class DiscoverViewModel {
         return Array(dated.sorted { $0.1 > $1.1 }.prefix(Self.newsLimit).map(\.0))
     }
 
-    func downloadedArticleCount(in pages: [ContentPage]) -> Int {
-        pages.filter(\.isDownloaded).count
+    func refreshArticleCount(in context: ModelContext) {
+        let descriptor = FetchDescriptor<ContentPage>(predicate: #Predicate { $0.isDownloaded == true })
+        if let count = try? context.fetchCount(descriptor) { downloadedArticleCount = count }
     }
 
     func overviews(for games: [Game], pages: [ContentPage]) -> [String: GameOverview] {

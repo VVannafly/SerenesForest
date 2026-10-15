@@ -66,7 +66,7 @@ enum Catalog {
         ("tokyo-mirage-sessions", "Tokyo Mirage Sessions ♯FE", "Wii U", "https://wiki.serenesforest.net/index.php/Tokyo_Mirage_Sessions_%E2%99%AFFE")
     ]
 
-    @MainActor static func seed(_ context: ModelContext) throws {
+    @MainActor static func seed(_ context: ModelContext, installedBundledLibrary: Bool = false) throws {
         let existing = try context.fetch(FetchDescriptor<Game>())
         let slugs = Set(existing.map(\.slug))
         for (slug, title, platform, path) in games where !slugs.contains(slug) {
@@ -85,7 +85,10 @@ enum Catalog {
             try importBuildGameNews(into: context)
         }
         let cleanupMarker = "SerenesForest.challengeCleanupV1"
-        if !UserDefaults.standard.bool(forKey: cleanupMarker) {
+        if installedBundledLibrary {
+            // The bundled store was already filtered while it was built.
+            UserDefaults.standard.set(true, forKey: cleanupMarker)
+        } else if !UserDefaults.standard.bool(forKey: cleanupMarker) {
             // Earlier archives accidentally stored anti-bot challenge pages as articles.
             for page in try context.fetch(FetchDescriptor<ContentPage>())
                 where SiteHTML.isChallenge(title: page.title) {
@@ -94,7 +97,9 @@ enum Catalog {
             try context.save()
             UserDefaults.standard.set(true, forKey: cleanupMarker)
         }
-        if UserDefaults.standard.object(forKey: "SerenesForest.lastSyncAttempt") == nil,
+        if installedBundledLibrary {
+            UserDefaults.standard.set(Date(), forKey: "SerenesForest.lastSyncAttempt")
+        } else if UserDefaults.standard.object(forKey: "SerenesForest.lastSyncAttempt") == nil,
            try context.fetch(FetchDescriptor<ContentPage>()).contains(where: \.isDownloaded) {
             UserDefaults.standard.set(Date(), forKey: "SerenesForest.lastSyncAttempt")
         }

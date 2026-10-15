@@ -25,17 +25,19 @@ struct DiscoverView: View {
     var sync: ContentSync
     @State private var viewModel = DiscoverViewModel()
     @Query(sort: \Game.title) private var games: [Game]
-    @Query private var pages: [ContentPage]
+    @Query(filter: #Predicate<ContentPage> { $0.category == "Game" }) private var overviewPages: [ContentPage]
+    @Query(filter: #Predicate<ContentPage> { $0.category == "News" }) private var newsPages: [ContentPage]
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.horizontalSizeClass) private var sizeClass
 
     private var availableGames: [Game] { viewModel.availableGames(from: games) }
 
     private var latestNews: [ContentPage] {
-        viewModel.latestNews(from: pages)
+        viewModel.latestNews(from: newsPages)
     }
 
     var body: some View {
-        let overviews = viewModel.overviews(for: availableGames, pages: pages)
+        let overviews = viewModel.overviews(for: availableGames, pages: overviewPages)
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
                 ZStack(alignment: .bottomLeading) {
@@ -52,7 +54,7 @@ struct DiscoverView: View {
                         .allowsHitTesting(false)
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: sizeClass == .compact ? 8 : 12) {
-                        Text(Constants.articleCount(viewModel.downloadedArticleCount(in: pages),
+                        Text(Constants.articleCount(viewModel.downloadedArticleCount,
                                                     russian: AppText.isRussian, compact: sizeClass == .compact))
                             .font(.caption.bold()).tracking(sizeClass == .compact ? 1.2 : 2.4)
                             .foregroundStyle(Palette.soft)
@@ -130,6 +132,7 @@ struct DiscoverView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+        .task(id: sync.isSyncing) { viewModel.refreshArticleCount(in: modelContext) }
     }
 
 }

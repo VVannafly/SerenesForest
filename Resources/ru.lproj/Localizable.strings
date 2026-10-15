@@ -18,6 +18,13 @@
 "All pages" = "Все страницы";
 "Media" = "Медиа";
 "Settings" = "Настройки";
+"Storage" = "Хранилище";
+"Clear downloaded images" = "Очистить загруженные изображения";
+"Clearing images…" = "Удаление изображений…";
+"Images removed" = "Изображений удалено";
+"Could not clear downloaded images" = "Не удалось удалить загруженные изображения";
+"Downloaded images will load again when you view them. Articles and bundled game covers stay available offline." = "Изображения загрузятся снова при просмотре. Статьи и встроенные обложки игр останутся доступны без сети.";
+"Remove downloaded images from this device? Articles and image links will be kept." = "Удалить загруженные изображения с устройства? Статьи и ссылки на изображения сохранятся.";
 "Language" = "Язык";
 "App language" = "Язык приложения";
 "Appearance" = "Оформление";

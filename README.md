@@ -31,11 +31,13 @@ Run `swift test --package-path Sources/LocalPackages/SerenesParsing` to check th
 
 `Resources/PreloadedLibrary` is the distributable SwiftData store with article text and media URLs. Image bytes are downloaded on first view and cached in the writable database; small bundled game covers remain available offline. It currently contains 4,705 pages, 25,177 media URLs, 22 games, and 1,269 wiki-to-game links. The app bundle contains this store directly; the large source JSON/JSONL files are not included in the Xcode project or repository.
 
+**Settings → Storage → Clear downloaded images** removes locally cached image bytes while keeping articles, media links, other downloaded files, and bundled game covers. Images can download again on the next view.
+
 To refresh it, generate the five source files in the ignored `BuildContent/` directory using the scripts below, then run `python3 scripts/build_preloaded_library.py` on macOS. You can keep these large inputs outside the project and set `SERENES_SOURCE_CONTENT_DIR` to their directory. The build script strips image bytes from temporary JSONL inputs; only article text and asset metadata go into the bundled SwiftData store. The script builds the app, imports all content into a fresh store, checks its integrity and record counts, and replaces `Resources/PreloadedLibrary`. If only an existing bundled store is available, `python3 scripts/compact_preloaded_library.py` removes its image bytes while keeping every record. Rebuild the iOS/macOS app afterward. Existing installations retain their writable library, bookmarks, translations, and downloaded updates; new installations start from the refreshed bundled store.
 
 The app icon and Discover header use the Shield of Flames render from [Fire Emblem Wiki](https://fireemblemwiki.org/wiki/File:FEWA_Shield_of_Flames_complete.png). The wiki identifies it as copyrighted official artwork; its file page documents the source and usage rationale. Run `swift -module-cache-path /private/tmp/serenes-swift-module-cache scripts/build_app_icon.swift` from the project root to regenerate all app icon sizes from the bundled image.
 
-For a physical iPhone or signed Mac build, choose your Apple development team and replace the example bundle identifier in the target settings.
+For a physical iPhone or signed Mac build, put `DEVELOPMENT_TEAM = YOUR_TEAM_ID` in `Config/Signing.local.xcconfig` and replace the example bundle identifier in the target settings. The local signing file is ignored by Git; keep Team IDs out of `project.pbxproj` because that file is tracked.
 
 ## Content and sync
 

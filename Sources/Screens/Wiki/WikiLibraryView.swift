@@ -13,7 +13,7 @@ private enum Constants {
 
 struct WikiLibraryView: View {
     @State var viewModel = WikiLibraryViewModel()
-    @Query private var allPages: [ContentPage]
+    @Query(filter: #Predicate<ContentPage> { $0.category.starts(with: "Wiki · ") }) private var allPages: [ContentPage]
     @SceneStorage("SerenesForest.wikiScroll") private var scrollAnchor: String?
 
     private var wikiPages: [ContentPage] { viewModel.wikiPages(from: allPages) }

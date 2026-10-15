@@ -12,7 +12,7 @@ private enum Constants {
 
 struct MediaView: View {
     @State var viewModel = MediaViewModel()
-    @Query private var pages: [ContentPage]
+    @Query(filter: #Predicate<ContentPage> { $0.category == "Media" }) private var pages: [ContentPage]
     @Query private var assets: [ContentAsset]
     @SceneStorage("SerenesForest.mediaScroll") private var scrollAnchor: String?
 

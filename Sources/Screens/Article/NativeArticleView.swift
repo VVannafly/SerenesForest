@@ -82,10 +82,6 @@ struct NativeArticleView: View {
             articleImage(url, alt: alt)
         case .table(let table):
             articleTable(table)
-        case .fatesClasses(let guide):
-            FatesClassesView(guide: guide, assets: assets, onLink: onLink)
-        case .classScheme(let scheme):
-            ClassSchemeView(scheme: scheme, assets: assets, onLink: onLink)
         case .tabs(let tabs):
             if !tabs.isEmpty {
                 let selected = min(selectedTabs[index] ?? 0, tabs.count - 1)

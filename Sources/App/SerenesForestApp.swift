@@ -23,8 +23,8 @@ struct SerenesForestApp: App {
     init() {
         do {
             let buildPath = ProcessInfo.processInfo.environment[Constants.buildStorePath]
-            let container = try Self.makeContainer(buildPath: buildPath)
-            try Catalog.seed(container.mainContext)
+            let (container, installedBundledLibrary) = try Self.makeContainer(buildPath: buildPath)
+            try Catalog.seed(container.mainContext, installedBundledLibrary: installedBundledLibrary)
             self.container = container
             self.isBuildingLibrary = buildPath != nil
             self.isVerifyingLibrary = ProcessInfo.processInfo.environment[Constants.verifyStore] != nil
@@ -64,9 +64,10 @@ struct SerenesForestApp: App {
         }
     }
 
-    private static func makeContainer(buildPath: String?) throws -> ModelContainer {
+    private static func makeContainer(buildPath: String?) throws -> (ModelContainer, Bool) {
         let fileManager = FileManager.default
         let storeURL: URL
+        var installedBundledLibrary = false
         if let buildPath {
             guard ProcessInfo.processInfo.environment[Constants.buildContentDirectory] != nil else {
                 throw CocoaError(.fileNoSuchFile)
@@ -92,6 +93,7 @@ struct SerenesForestApp: App {
                     }
                     try fileManager.copyItem(at: bundled, to: installing)
                     try fileManager.moveItem(at: installing, to: library)
+                    installedBundledLibrary = true
                 }
                 storeURL = library.appending(path: Constants.storeName)
             }
@@ -100,7 +102,8 @@ struct SerenesForestApp: App {
             }
         }
         let configuration = ModelConfiguration(url: storeURL)
-        return try ModelContainer(for: Game.self, ContentPage.self, WikiGamePage.self,
-                                  ContentAsset.self, SitemapSection.self, configurations: configuration)
+        let container = try ModelContainer(for: Game.self, ContentPage.self, WikiGamePage.self,
+                                           ContentAsset.self, SitemapSection.self, configurations: configuration)
+        return (container, installedBundledLibrary)
     }
 }

@@ -7,3 +7,14 @@ BuildContent/
 **/.build/
 **/.swiftpm/xcode/
 *.log
+
+# Local Apple signing and developer account data. Keep real Team IDs here.
+Config/Signing.local.xcconfig
+*.mobileprovision
+*.p12
+*.p8
+*.key
+*.pem
+.env
+.env.*
+!.env.example

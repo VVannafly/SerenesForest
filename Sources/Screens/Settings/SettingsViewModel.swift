@@ -6,6 +6,8 @@ import Translation
 
 private enum Constants {
     static let russian = "ru"
+    static var imagesRemoved: String { AppText.localized("Images removed") }
+    static var imageCleanupFailed: String { AppText.localized("Could not clear downloaded images") }
     static let paused = "Перевод приостановлен. Повторный запуск продолжит с сохранённого места."
     static func completed(_ count: Int, failed: Int) -> String { "Перевод завершён. Переведено: \(count), требуют повтора: \(failed)." }
     static func stopped(_ message: String) -> String { "Перевод остановлен: \(message). Прогресс сохранён." }
@@ -21,6 +23,22 @@ final class SettingsViewModel {
     var totalFragments = 0
     var currentPageTitle = ""
     var translationMessage: String?
+    var showClearImageConfirmation = false
+    var isClearingImages = false
+    var imageCleanupMessage: String?
+
+    func clearCachedImages(container: ModelContainer) async {
+        guard !isClearingImages else { return }
+        isClearingImages = true
+        imageCleanupMessage = nil
+        defer { isClearingImages = false }
+        do {
+            let count = try await LocalImageLoader.shared.clearCachedImages(in: container)
+            imageCleanupMessage = "\(Constants.imagesRemoved): \(count)"
+        } catch {
+            imageCleanupMessage = "\(Constants.imageCleanupFailed): \(error.localizedDescription)"
+        }
+    }
 
     @available(iOS 18.0, macOS 15.0, *)
     func translateSavedArticles(using session: TranslationSession, context: ModelContext, language: String) async {

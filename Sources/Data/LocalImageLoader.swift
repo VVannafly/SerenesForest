@@ -69,8 +69,46 @@ actor LocalImageLoader {
     }
     private var inFlight: [String: Flight] = [:]
     private var failedDownloads: [String: Date] = [:]
+    private var isClearingImages = false
+    private var cacheGeneration = 0
+
+    func clearCachedImages(in container: ModelContainer) async throws -> Int {
+        guard !isClearingImages else { return 0 }
+        isClearingImages = true
+        cacheGeneration += 1
+        defer {
+            ArticleThumbnailCache.images.removeAllObjects()
+            URLCache.shared.removeAllCachedResponses()
+            failedDownloads.removeAll()
+            isClearingImages = false
+        }
+
+        let pending = inFlight.values.map(\.task)
+        inFlight.removeAll()
+        for task in pending { task.cancel() }
+        for task in pending { _ = await task.value }
+
+        let removed = try await Task.detached(priority: .utility) {
+            let context = ModelContext(container)
+            let assets = try context.fetch(FetchDescriptor<ContentAsset>())
+            var count = 0
+            for asset in assets where asset.fetchedAt != nil &&
+                asset.mimeType?.hasPrefix(Constants.imageMimePrefix) == true {
+                asset.data = nil
+                asset.fetchedAt = nil
+                asset.lastAttempt = nil
+                asset.lastError = nil
+                count += 1
+                if count.isMultiple(of: 100) { try context.save() }
+            }
+            try context.save()
+            return count
+        }.value
+        return removed
+    }
 
     func assetImage(assetURL: String, fetchedAt: Date, maxPixelSize: Int, container: ModelContainer) async -> CGImage? {
+        guard !isClearingImages else { return nil }
         let key = "asset:\(assetURL)|\(fetchedAt.timeIntervalSinceReferenceDate)|\(maxPixelSize)"
         return await load(key: key) {
             let context = ModelContext(container)
@@ -88,6 +126,7 @@ actor LocalImageLoader {
     }
 
     func missingAssetImage(assetURL: String, maxPixelSize: Int, container: ModelContainer) async -> CGImage? {
+        guard !isClearingImages else { return nil }
         guard let url = URL(string: assetURL), SiteScope.canonical(url) != nil,
               SiteScope.isAsset(url) else { return nil }
         let context = ModelContext(container)
@@ -117,6 +156,7 @@ actor LocalImageLoader {
                           let mime = response.mimeType, mime.hasPrefix(Constants.imageMimePrefix),
                           let size = (try FileManager.default.attributesOfItem(atPath: file.path)[.size] as? NSNumber)?.int64Value,
                           size > 0, size <= Constants.maximumBytes else { continue }
+                    guard !Task.isCancelled else { return nil }
                     let data = try Data(contentsOf: file, options: .mappedIfSafe)
                     guard let source = CGImageSourceCreateWithData(data as CFData,
                         [kCGImageSourceShouldCache: false] as CFDictionary),
@@ -139,6 +179,7 @@ actor LocalImageLoader {
                     asset.fetchedAt = .now
                     asset.lastAttempt = .now
                     asset.lastError = nil
+                    guard !Task.isCancelled else { return nil }
                     try context.save()
                     return image
                 } catch {
@@ -151,6 +192,7 @@ actor LocalImageLoader {
 
     private func loadRemote(key: String, assetURL: String,
                             fetch: @escaping @Sendable () async -> CGImage?) async -> CGImage? {
+        let generation = cacheGeneration
         let cacheKey = key as NSString
         if let cached = ArticleThumbnailCache.images.object(forKey: cacheKey) { return cached.image }
         guard !Task.isCancelled else { return nil }
@@ -168,6 +210,10 @@ actor LocalImageLoader {
             await task.value
         } onCancel: {
             Task { await self.drop(key: key, token: token) }
+        }
+        guard generation == cacheGeneration, !isClearingImages else {
+            drop(key: key, token: token)
+            return nil
         }
         if let image, !Task.isCancelled {
             ArticleThumbnailCache.images.setObject(ArticleThumbnail(image), forKey: cacheKey,
@@ -195,6 +241,7 @@ actor LocalImageLoader {
     }
 
     private func load(key: String, decode: @escaping @Sendable () -> CGImage?) async -> CGImage? {
+        let generation = cacheGeneration
         let cacheKey = key as NSString
         if let cached = ArticleThumbnailCache.images.object(forKey: cacheKey) { return cached.image }
         guard !Task.isCancelled else { return nil }
@@ -221,6 +268,10 @@ actor LocalImageLoader {
             await task.value
         } onCancel: {
             Task { await self.drop(key: key, token: token) }
+        }
+        guard generation == cacheGeneration, !isClearingImages else {
+            drop(key: key, token: token)
+            return nil
         }
         if let image, !Task.isCancelled {
             ArticleThumbnailCache.images.setObject(ArticleThumbnail(image), forKey: cacheKey,

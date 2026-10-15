@@ -15,7 +15,7 @@ struct GamesView: View {
     @State var viewModel = GamesViewModel()
     let favoritesOnly: Bool
     @Query(sort: \Game.title) private var games: [Game]
-    @Query private var pages: [ContentPage]
+    @Query(filter: #Predicate<ContentPage> { $0.category == "Game" }) private var pages: [ContentPage]
     @SceneStorage private var storedScrollAnchor: String
 
     init(favoritesOnly: Bool) {

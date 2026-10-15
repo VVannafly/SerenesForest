@@ -20,6 +20,11 @@ private enum Constants {
     static var light: String { AppText.localized( "Light") }
     static var dark: String { AppText.localized( "Dark") }
     static var settings: String { AppText.localized( "Settings") }
+    static var storage: String { AppText.localized("Storage") }
+    static var clearDownloadedImages: String { AppText.localized("Clear downloaded images") }
+    static var clearingImages: String { AppText.localized("Clearing images…") }
+    static var clearImagesDescription: String { AppText.localized("Downloaded images will load again when you view them. Articles and bundled game covers stay available offline.") }
+    static var clearImagesConfirmation: String { AppText.localized("Remove downloaded images from this device? Articles and image links will be kept.") }
 }
 
 struct SettingsView: View {
@@ -27,6 +32,7 @@ struct SettingsView: View {
     @AppStorage("SerenesForest.language") private var language = "en"
     @AppStorage("SerenesForest.appearance") private var appearance = "system"
     @Environment(\.modelContext) private var context
+    @Environment(ContentSync.self) private var sync: ContentSync
 
     var body: some View {
         Form {
@@ -75,6 +81,27 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.segmented)
             }
+            Section(Constants.storage) {
+                Button(role: .destructive) { viewModel.showClearImageConfirmation = true } label: {
+                    Label(Constants.clearDownloadedImages, systemImage: "trash")
+                }
+                .disabled(viewModel.isClearingImages || sync.isSyncing)
+                if viewModel.isClearingImages { ProgressView(Constants.clearingImages) }
+                if let message = viewModel.imageCleanupMessage {
+                    Text(message).font(.caption).foregroundStyle(.secondary)
+                }
+                Text(Constants.clearImagesDescription)
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .confirmationDialog(Constants.clearDownloadedImages,
+                            isPresented: $viewModel.showClearImageConfirmation,
+                            titleVisibility: .visible) {
+            Button(Constants.clearDownloadedImages, role: .destructive) {
+                Task { await viewModel.clearCachedImages(container: context.container) }
+            }
+        } message: {
+            Text(Constants.clearImagesConfirmation)
         }
         .background {
             if #available(iOS 18.0, macOS 15.0, *), TranslationAvailability.isSupported,

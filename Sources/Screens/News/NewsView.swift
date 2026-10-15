@@ -15,7 +15,7 @@ private enum Constants {
 struct NewsView: View {
     @State var viewModel = NewsViewModel()
     @Environment(ContentSync.self) private var sync: ContentSync
-    @Query private var allPages: [ContentPage]
+    @Query(filter: #Predicate<ContentPage> { $0.category == "News" }) private var allPages: [ContentPage]
     @SceneStorage("SerenesForest.newsScroll") private var scrollAnchor: String?
 
     private var pages: [ContentPage] { viewModel.pages(from: allPages) }
