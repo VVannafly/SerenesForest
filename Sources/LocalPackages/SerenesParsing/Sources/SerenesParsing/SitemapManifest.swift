@@ -1,12 +1,12 @@
 import Foundation
 
-public struct SitemapEntry {
+public struct SitemapEntry: Sendable {
     public let url: URL
     public let modifiedAt: Date?
 }
 
-public struct SitemapManifest {
-    public enum Kind { case index, pages }
+public struct SitemapManifest: Sendable {
+    public enum Kind: Sendable { case index, pages }
 
     public let kind: Kind
     public let entries: [SitemapEntry]

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build the app's article database from the live site and Wayback captures.
+"""Generate temporary article inputs for the bundled SwiftData library.
 
-Run from the SerenesForest directory. The generated JSON is imported into
-SwiftData on the app's first launch. A live sync can replace archived pages.
+Run from the SerenesForest directory. build_preloaded_library.py imports the
+generated JSON into the distributable store before the app is built.
 """
 
 import argparse

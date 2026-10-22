@@ -33,14 +33,13 @@ final class SettingsViewModel {
         imageCleanupMessage = nil
         defer { isClearingImages = false }
         do {
-            let count = try await LocalImageLoader.shared.clearCachedImages(in: container)
+            let count = try await ImageLoadingService.shared.clearCachedImages(in: container)
             imageCleanupMessage = "\(Constants.imagesRemoved): \(count)"
         } catch {
             imageCleanupMessage = "\(Constants.imageCleanupFailed): \(error.localizedDescription)"
         }
     }
 
-    @available(iOS 18.0, macOS 15.0, *)
     func translateSavedArticles(using session: TranslationSession, context: ModelContext, language: String) async {
         defer { translatingLibrary = false }
         do {

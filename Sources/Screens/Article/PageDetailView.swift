@@ -1,5 +1,6 @@
 import SwiftUI
 import Observation
+import SerenesNavigation
 import SwiftData
 import Translation
 
@@ -20,6 +21,7 @@ struct PageDetailView: View {
     let page: ContentPage
     @AppStorage("SerenesForest.language") var language = "en"
     @Environment(ContentSync.self) var sync: ContentSync
+    @Environment(PageNavigator.self) var navigator: PageNavigator
     @Environment(\.navigationTranslations) var navigationTranslations
     @Environment(\.openURL) var openURL
     @Environment(\.modelContext) var context
@@ -42,15 +44,11 @@ struct PageDetailView: View {
 
     var body: some View {
         Group {
-            if #available(iOS 18.0, macOS 15.0, *) {
-                if language == "ru", TranslationAvailability.isSupported,
-                   viewModel.articleBlocks != nil, page.russianContent == nil {
-                    articleContent.translationTask(source: Locale.Language(identifier: "en"),
-                                                   target: Locale.Language(identifier: "ru")) { session in
-                        await viewModel.translateArticle(using: session, page: page, context: context, language: language)
-                    }
-                } else {
-                    articleContent
+            if language == "ru", TranslationAvailability.isSupported,
+               viewModel.articleBlocks != nil, page.russianContent == nil {
+                articleContent.translationTask(source: Locale.Language(identifier: "en"),
+                                               target: Locale.Language(identifier: "ru")) { session in
+                    await viewModel.translateArticle(using: session, page: page, context: context, language: language)
                 }
             } else {
                 articleContent
@@ -61,21 +59,6 @@ struct PageDetailView: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
-        .navigationDestination(isPresented: $viewModel.showLinkedPage) {
-            if let linkedPage = viewModel.linkedPage { PageDetailView(page: linkedPage) }
-        }
-        .navigationDestination(item: $viewModel.trailTarget) { target in
-            if let slug = page.gameSlug {
-                if let url = target.url {
-                    let pages = (try? context.fetch(FetchDescriptor<ContentPage>(
-                        predicate: #Predicate { $0.gameSlug == slug }))) ?? []
-                    GameLinkView(title: target.title, url: url, pages: pages, tint: articleTint)
-                } else if let game = (try? context.fetch(FetchDescriptor<Game>(
-                    predicate: #Predicate { $0.slug == slug })))?.first {
-                    GameDetailView(game: game)
-                }
-            }
-        }
         .sheet(item: $viewModel.linkedAsset) { AssetDetailView(asset: $0) }
         .confirmationDialog(Constants.openLinkInBrowser, isPresented: $viewModel.showExternalLinkPrompt) {
             Button { if let externalLink = viewModel.externalLink { openURL(externalLink) } } label: {
@@ -95,7 +78,15 @@ struct PageDetailView: View {
                 ToolbarItem(placement: .principal) {
                     Menu {
                         ForEach(articleTrail) { target in
-                            Button(target.title) { viewModel.trailTarget = target }
+                            Button(target.title) {
+                                guard let slug = page.gameSlug else { return }
+                                if let url = target.url {
+                                    navigator.returnToAncestor(.gameLink(title: target.title,
+                                                                         url: url.absoluteString, slug: slug))
+                                } else {
+                                    navigator.returnToAncestor(.game(slug))
+                                }
+                            }
                         }
                     } label: {
                         VStack(spacing: 1) {

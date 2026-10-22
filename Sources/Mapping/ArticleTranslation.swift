@@ -11,16 +11,14 @@ enum ArticleTranslation {
             case .image(_, let alt): return alt
             case .table(let rows):
                 return rows.map { $0.map { $0.runs.map(\.text).joined() }.joined(separator: " ") }.joined(separator: "\n")
-            case .fatesClasses(let guide):
-                return guide.groups.map { group in
-                    ([group.base] + group.promotions).map { $0.runs.map(\.text).joined() }.joined(separator: "\n")
-                }.joined(separator: "\n") + "\n" + guide.unassignedPromotions.map { $0.runs.map(\.text).joined() }.joined(separator: "\n")
             case .classScheme(let scheme):
                 func text(_ branch: ClassSchemeBranch) -> String {
                     ([branch.entry.runs.map(\.text).joined(), branch.upgrade?.runs.map(\.text).joined() ?? ""] +
                      branch.children.map(text)).joined(separator: "\n")
                 }
-                return scheme.roots.map(text).joined(separator: "\n")
+                return (scheme.roots.map(text) + scheme.unassignedEntries.map {
+                    $0.runs.map(\.text).joined()
+                }).joined(separator: "\n")
             case .tabs(let tabs):
                 return tabs.map { $0.title + "\n" + plainText($0.blocks) }.joined(separator: "\n")
             case .rule: return ""
@@ -47,11 +45,6 @@ enum ArticleTranslation {
             case .image(_, let alt): append(alt)
             case .table(let rows):
                 rows.flatMap { $0 }.flatMap(\.runs).forEach { append($0.text) }
-            case .fatesClasses(let guide):
-                (guide.baseTitle + guide.promotedTitle).forEach { append($0.text) }
-                for entry in guide.groups.flatMap({ [$0.base] + $0.promotions }) + guide.unassignedPromotions {
-                    entry.runs.forEach { append($0.text) }
-                }
             case .classScheme(let scheme):
                 scheme.stageTitles.forEach(append)
                 func visit(_ branch: ClassSchemeBranch) {
@@ -60,6 +53,7 @@ enum ArticleTranslation {
                     branch.children.forEach(visit)
                 }
                 scheme.roots.forEach(visit)
+                scheme.unassignedEntries.forEach { entry in entry.runs.forEach { append($0.text) } }
             case .tabs(let tabs):
                 for tab in tabs {
                     append(tab.title)
@@ -109,14 +103,9 @@ enum ArticleTranslation {
                 result.runs = runs(cell.runs)
                 return result
             } })
-            case .fatesClasses(let guide): .fatesClasses(FatesClassGuide(
-                baseTitle: runs(guide.baseTitle), promotedTitle: runs(guide.promotedTitle),
-                groups: guide.groups.map { FatesClassGroup(base: entry($0.base), promotions: $0.promotions.map(entry)) },
-                unassignedPromotions: guide.unassignedPromotions.map(entry),
-                consumedImageURLs: guide.consumedImageURLs
-            ))
             case .classScheme(let scheme): .classScheme(ClassScheme(
                 stageTitles: scheme.stageTitles.map(text), roots: scheme.roots.map(branch),
+                unassignedEntries: scheme.unassignedEntries.map(entry),
                 consumedImageURLs: scheme.consumedImageURLs
             ))
             case .tabs(let tabs): .tabs(tabs.map { tab in

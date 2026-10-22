@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ParsedPage {
+public struct ParsedPage: Sendable {
     public let title: String
     public let html: String
     public let plainText: String

@@ -23,11 +23,11 @@ final class AssetDetailViewModel {
             let container = context.container
             if mimeType.hasPrefix("image/") {
                 if let fetchedAt = asset.fetchedAt {
-                    image = await LocalImageLoader.shared.assetImage(
+                    image = await ImageLoadingService.shared.assetImage(
                         assetURL: assetURL, fetchedAt: fetchedAt, maxPixelSize: 2400, container: container
                     )
                 } else {
-                    image = await LocalImageLoader.shared.missingAssetImage(
+                    image = await ImageLoadingService.shared.missingAssetImage(
                         assetURL: assetURL, maxPixelSize: 2400, container: container
                     )
                 }

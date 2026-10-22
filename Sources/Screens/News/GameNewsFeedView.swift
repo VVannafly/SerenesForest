@@ -1,4 +1,5 @@
 import SwiftUI
+import SerenesNavigation
 import Observation
 import SwiftData
 
@@ -42,7 +43,7 @@ struct GameNewsFeedView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 ForEach(pages) { page in
-                    NavigationLink { PageDetailView(page: page) } label: { PageRow(page: page) }
+                    NavigationLink(value: PageRoute.article(page.url)) { PageRow(page: page) }
                         .buttonStyle(.plain)
                         .id(page.url)
                 }

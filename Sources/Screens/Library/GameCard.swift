@@ -13,7 +13,7 @@ struct GameCard: View {
                 Rectangle().fill(Palette.accent.opacity(0.12))
                     .overlay { Image(systemName: "shield.checkered").font(.largeTitle).foregroundStyle(Palette.accent) }
                     .overlay {
-                        CachedBundleImage(name: game.slug, mode: .fill, maxPixelSize: 1200)
+                        CachedBundleImage(name: game.slug, mode: .fill, maxPixelSize: 480)
                             .frame(width: geometry.size.width, height: geometry.size.height)
                             .clipped()
                     }

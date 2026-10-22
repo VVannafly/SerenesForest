@@ -1,4 +1,5 @@
 import SwiftUI
+import SerenesNavigation
 import Observation
 import SwiftData
 
@@ -30,17 +31,19 @@ struct SavedPagesView: View {
                     ContentUnavailableView.search(text: viewModel.search)
                 } else {
                     ForEach(entries) { entry in
-                        NavigationLink {
-                            if let game = entry.game {
-                                GameDetailView(game: game)
-                            } else {
-                                PageDetailView(page: entry.page)
+                        if let game = entry.game {
+                            NavigationLink(value: PageRoute.game(game.slug)) {
+                                PageRow(page: entry.page)
                             }
-                        } label: {
-                            PageRow(page: entry.page)
+                            .buttonStyle(.plain)
+                            .id(entry.page.url)
+                        } else {
+                            NavigationLink(value: PageRoute.article(entry.page.url)) {
+                                PageRow(page: entry.page)
+                            }
+                            .buttonStyle(.plain)
+                            .id(entry.page.url)
                         }
-                        .buttonStyle(.plain)
-                        .id(entry.page.url)
                     }
                 }
             }

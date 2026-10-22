@@ -1,4 +1,5 @@
 import SwiftUI
+import SerenesNavigation
 
 private enum Constants {
     static let subtopicsCount = (english: "subtopics", russian: ("подтема", "подтемы", "подтем"))
@@ -10,15 +11,17 @@ struct GameLinkView: View {
     private let viewModel = GameLinkViewModel()
     let title: String
     let url: URL
+    let gameSlug: String
     let pages: [ContentPage]
     let tint: Color
     @Environment(\.navigationTranslations) private var navigationTranslations
     @Environment(\.openURL) private var openURL
     @SceneStorage private var storedScrollAnchor: String
 
-    init(title: String, url: URL, pages: [ContentPage], tint: Color) {
+    init(title: String, url: URL, gameSlug: String, pages: [ContentPage], tint: Color) {
         self.title = title
         self.url = url
+        self.gameSlug = gameSlug
         self.pages = pages
         self.tint = tint
         _storedScrollAnchor = SceneStorage(wrappedValue: "", "SerenesForest.gameLink.\(url.absoluteString)")
@@ -35,7 +38,7 @@ struct GameLinkView: View {
             LazyVStack(alignment: .leading, spacing: 14) {
                 sectionSubtitle(AppText.count(content.children.count, english: Constants.subtopicsCount.english, russian: Constants.subtopicsCount.russian))
                 if let page = content.page {
-                    NavigationLink { PageDetailView(page: page) } label: { PageRow(page: page) }
+                    NavigationLink(value: PageRoute.article(page.url)) { PageRow(page: page) }
                         .buttonStyle(.plain)
                         .id(Constants.parentAnchor)
                 } else {
@@ -47,10 +50,12 @@ struct GameLinkView: View {
                 ForEach(content.children) { child in
                     Group {
                         if let page = child.page, !child.hasDescendants {
-                            NavigationLink { PageDetailView(page: page) } label: { PageRow(page: page) }
+                            NavigationLink(value: PageRoute.article(page.url)) { PageRow(page: page) }
                                 .buttonStyle(.plain)
                         } else {
-                            NavigationLink { GameLinkView(title: child.title, url: child.url, pages: pages, tint: tint) } label: {
+                            NavigationLink(value: PageRoute.gameLink(
+                                title: child.title, url: child.url.absoluteString,
+                                slug: gameSlug)) {
                                 HStack(spacing: 13) {
                                     ContentIcon(title: child.title, size: 36, tint: tint)
                                     Text(navigationTranslations[child.title] ?? child.title).font(.body.weight(.medium))

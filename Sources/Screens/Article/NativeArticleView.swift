@@ -28,6 +28,7 @@ struct NativeArticleView: View {
                         .padding(.vertical, 24)
                         .frame(maxWidth: .infinity)
                 }
+                .pauseImageLoadingDuringScroll()
             }
         }
         .environment(\.openURL, OpenURLAction { url in onLink(url); return .handled })
@@ -82,6 +83,8 @@ struct NativeArticleView: View {
             articleImage(url, alt: alt)
         case .table(let table):
             articleTable(table)
+        case .classScheme(let scheme):
+            ClassSchemeView(scheme: scheme, assets: assets, onLink: onLink)
         case .tabs(let tabs):
             if !tabs.isEmpty {
                 let selected = min(selectedTabs[index] ?? 0, tabs.count - 1)

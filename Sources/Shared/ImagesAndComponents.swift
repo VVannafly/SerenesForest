@@ -1,14 +1,40 @@
 import SwiftUI
 
+extension EnvironmentValues {
+    @Entry var imageLoadingPaused = false
+}
+
+private struct PauseImageLoadingDuringScroll: ViewModifier {
+    @State private var isScrolling = false
+
+    func body(content: Content) -> some View {
+        content
+            .onScrollPhaseChange { _, phase in
+                isScrolling = phase.isScrolling
+            }
+            .environment(\.imageLoadingPaused, isScrolling)
+    }
+}
+
+extension View {
+    func pauseImageLoadingDuringScroll() -> some View {
+        modifier(PauseImageLoadingDuringScroll())
+    }
+}
+
 struct CachedBundleImage: View {
     let name: String
     let mode: ContentMode
     let maxPixelSize: Int
+    @Environment(\.imageLoadingPaused) private var imageLoadingPaused
     @State private var image: CGImage?
+    @State private var loadedKey: String?
+
+    private var imageKey: String { "\(name)|\(maxPixelSize)" }
 
     var body: some View {
         Group {
-            if let image {
+            if let image, loadedKey == imageKey {
                 Image(decorative: image, scale: 1)
                     .resizable()
                     .aspectRatio(contentMode: mode)
@@ -16,10 +42,13 @@ struct CachedBundleImage: View {
                 Color.clear
             }
         }
-        .task(id: name) {
-            image = nil
-            let loaded = await LocalImageLoader.shared.bundleImage(named: name, maxPixelSize: maxPixelSize)
-            if !Task.isCancelled { image = loaded }
+        .task(id: "\(imageKey)|\(imageLoadingPaused)") {
+            guard !imageLoadingPaused, loadedKey != imageKey else { return }
+            let loaded = await ImageLoadingService.shared.bundleImage(named: name, maxPixelSize: maxPixelSize)
+            if !Task.isCancelled, let loaded {
+                image = loaded
+                loadedKey = imageKey
+            }
         }
     }
 }
@@ -51,11 +80,6 @@ struct GameSectionArtwork: View {
             }
             .accessibilityHidden(true)
     }
-}
-
-struct GameGuideWidthKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
 }
 
 struct GameActionButtonStyle: ButtonStyle {

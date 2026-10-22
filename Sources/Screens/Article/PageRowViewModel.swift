@@ -9,14 +9,14 @@ struct PageRowViewModel {
     let tint: Color?
     let isNews: Bool
 
-    init(page: ContentPage) {
-        isNews = page.category == Constants.newsCategory
-        guard let slug = page.gameSlug else {
+    init(title: String, category: String, gameSlug: String?) {
+        isNews = category == Constants.newsCategory
+        guard let slug = gameSlug else {
             section = nil
             tint = nil
             return
         }
-        let section = GameSection.style(for: page.title)
+        let section = GameSection.style(for: title)
         self.section = section
         tint = GameTheme.forGame(slug).color(for: section)
     }

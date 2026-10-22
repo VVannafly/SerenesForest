@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4DFB901A307FD1930061B701 /* SerenesParsing in Frameworks */ = {isa = PBXBuildFile; productRef = A49999999999999999999991 /* SerenesParsing */; };
+		4DFB901A307FD1930061B702 /* SerenesNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = A49999999999999999999993 /* SerenesNavigation */; };
 		A10000000000000000000010 /* GameCovers in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000010 /* GameCovers */; };
 		A10000000000000000000012 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* AppIcon.xcassets */; };
 		A10000000000000000000013 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001 /* Localizable.strings */; };
@@ -53,6 +54,7 @@
 		A10000000000000000009037 /* LibraryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009037 /* LibraryModels.swift */; };
 		A10000000000000000009038 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009038 /* Catalog.swift */; };
 		A10000000000000000009039 /* ContentSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009039 /* ContentSync.swift */; };
+		A10000000000000000009074 /* PageListQueryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009074 /* PageListQueryService.swift */; };
 		A10000000000000000009043 /* SiteHTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009043 /* SiteHTTPError.swift */; };
 		A10000000000000000009044 /* ArticleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009044 /* ArticleModels.swift */; };
 		A10000000000000000009045 /* ArticleTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009045 /* ArticleTranslation.swift */; };
@@ -63,7 +65,7 @@
 		A10000000000000000009050 /* FrozenArticleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009050 /* FrozenArticleTable.swift */; };
 		A10000000000000000009051 /* TableCellText.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009051 /* TableCellText.swift */; };
 		A10000000000000000009052 /* TableCellImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009052 /* TableCellImages.swift */; };
-		A10000000000000000009053 /* LocalImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009053 /* LocalImageLoader.swift */; };
+		A10000000000000000009053 /* ImageLoadingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009053 /* ImageLoadingService.swift */; };
 		A10000000000000000009054 /* ArticleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009054 /* ArticleImageView.swift */; };
 		A10000000000000000009056 /* SerenesForestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009056 /* SerenesForestApp.swift */; };
 		A10000000000000000009057 /* ArticlePresentationMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009057 /* ArticlePresentationMapper.swift */; };
@@ -74,8 +76,6 @@
 		A10000000000000000009062 /* AssetRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009062 /* AssetRowViewModel.swift */; };
 		A10000000000000000009063 /* FatesClassModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009063 /* FatesClassModels.swift */; };
 		A10000000000000000009064 /* FatesClassesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009064 /* FatesClassesParser.swift */; };
-		A10000000000000000009065 /* FatesClassesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009065 /* FatesClassesView.swift */; };
-		A10000000000000000009066 /* FatesClassesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009066 /* FatesClassesViewModel.swift */; };
 		A10000000000000000009067 /* AwakeningClassesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009067 /* AwakeningClassesParser.swift */; };
 		A10000000000000000009068 /* ClassSchemeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009068 /* ClassSchemeModels.swift */; };
 		A10000000000000000009069 /* SacredStonesClassSchemeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000009069 /* SacredStonesClassSchemeParser.swift */; };
@@ -111,7 +111,6 @@
 		A20000000000000000000013 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A20000000000000000000016 /* GFDL-1.3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GFDL-1.3.txt"; sourceTree = "<group>"; };
 		A20000000000000000000018 /* PreloadedLibrary */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PreloadedLibrary; sourceTree = "<group>"; };
-		A2F000000000000000000001 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/Signing.xcconfig; sourceTree = "<group>"; };
 		A20000000000000000009000 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		A20000000000000000009001 /* ImagesAndComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesAndComponents.swift; sourceTree = "<group>"; };
 		A20000000000000000009002 /* GameVisuals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameVisuals.swift; sourceTree = "<group>"; };
@@ -152,6 +151,7 @@
 		A20000000000000000009037 /* LibraryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryModels.swift; sourceTree = "<group>"; };
 		A20000000000000000009038 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
 		A20000000000000000009039 /* ContentSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSync.swift; sourceTree = "<group>"; };
+		A20000000000000000009074 /* PageListQueryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListQueryService.swift; sourceTree = "<group>"; };
 		A20000000000000000009043 /* SiteHTTPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteHTTPError.swift; sourceTree = "<group>"; };
 		A20000000000000000009044 /* ArticleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleModels.swift; sourceTree = "<group>"; };
 		A20000000000000000009045 /* ArticleTranslation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTranslation.swift; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 		A20000000000000000009050 /* FrozenArticleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrozenArticleTable.swift; sourceTree = "<group>"; };
 		A20000000000000000009051 /* TableCellText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellText.swift; sourceTree = "<group>"; };
 		A20000000000000000009052 /* TableCellImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellImages.swift; sourceTree = "<group>"; };
-		A20000000000000000009053 /* LocalImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalImageLoader.swift; sourceTree = "<group>"; };
+		A20000000000000000009053 /* ImageLoadingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingService.swift; sourceTree = "<group>"; };
 		A20000000000000000009054 /* ArticleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleImageView.swift; sourceTree = "<group>"; };
 		A20000000000000000009056 /* SerenesForestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerenesForestApp.swift; sourceTree = "<group>"; };
 		A20000000000000000009057 /* ArticlePresentationMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlePresentationMapper.swift; sourceTree = "<group>"; };
@@ -173,8 +173,6 @@
 		A20000000000000000009062 /* AssetRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRowViewModel.swift; sourceTree = "<group>"; };
 		A20000000000000000009063 /* FatesClassModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassModels.swift; sourceTree = "<group>"; };
 		A20000000000000000009064 /* FatesClassesParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassesParser.swift; sourceTree = "<group>"; };
-		A20000000000000000009065 /* FatesClassesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassesView.swift; sourceTree = "<group>"; };
-		A20000000000000000009066 /* FatesClassesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatesClassesViewModel.swift; sourceTree = "<group>"; };
 		A20000000000000000009067 /* AwakeningClassesParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwakeningClassesParser.swift; sourceTree = "<group>"; };
 		A20000000000000000009068 /* ClassSchemeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSchemeModels.swift; sourceTree = "<group>"; };
 		A20000000000000000009069 /* SacredStonesClassSchemeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SacredStonesClassSchemeParser.swift; sourceTree = "<group>"; };
@@ -201,6 +199,7 @@
 		A28888888888888888880012 /* AssetDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailViewModel.swift; sourceTree = "<group>"; };
 		A29999999999999999999990 /* PageCategoryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCategoryMapper.swift; sourceTree = "<group>"; };
 		A29999999999999999999991 /* ContentPageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPageMapper.swift; sourceTree = "<group>"; };
+		A2F000000000000000000001 /* Config/Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/Signing.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DFB901A307FD1930061B701 /* SerenesParsing in Frameworks */,
+				4DFB901A307FD1930061B702 /* SerenesNavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,7 +218,7 @@
 		A30000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
-				A2F000000000000000000001 /* Signing.xcconfig */,
+				A2F000000000000000000001 /* Config/Signing.xcconfig */,
 				A30000000000000000000002 /* Sources */,
 				A30000000000000000000004 /* Resources */,
 				A30000000000000000000003 /* Products */,
@@ -273,7 +273,8 @@
 				A26666666666666666666660 /* LibraryTranslationService.swift */,
 				A20000000000000000009038 /* Catalog.swift */,
 				A20000000000000000009039 /* ContentSync.swift */,
-				A20000000000000000009053 /* LocalImageLoader.swift */,
+				A20000000000000000009074 /* PageListQueryService.swift */,
+				A20000000000000000009053 /* ImageLoadingService.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -330,8 +331,6 @@
 				A20000000000000000009035 /* PageDetailView.swift */,
 				A20000000000000000009036 /* PageDetailNavigation.swift */,
 				A20000000000000000009049 /* NativeArticleView.swift */,
-				A20000000000000000009065 /* FatesClassesView.swift */,
-				A20000000000000000009066 /* FatesClassesViewModel.swift */,
 				A20000000000000000009070 /* ClassSchemeView.swift */,
 				A20000000000000000009071 /* ClassSchemeViewModel.swift */,
 				A20000000000000000009050 /* FrozenArticleTable.swift */,
@@ -495,6 +494,7 @@
 			name = SerenesForest;
 			packageProductDependencies = (
 				A49999999999999999999991 /* SerenesParsing */,
+				A49999999999999999999993 /* SerenesNavigation */,
 			);
 			productName = SerenesForest;
 			productReference = A20000000000000000000005 /* SerenesForest.app */;
@@ -507,7 +507,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 2660;
 				TargetAttributes = {
 					A40000000000000000000001 = {
 						CreatedOnToolsVersion = 16.0;
@@ -526,6 +526,7 @@
 			mainGroup = A30000000000000000000001;
 			packageReferences = (
 				A49999999999999999999990 /* XCLocalSwiftPackageReference "Sources/LocalPackages/SerenesParsing" */,
+				A49999999999999999999992 /* XCLocalSwiftPackageReference "Sources/LocalPackages/SerenesNavigation" */,
 			);
 			productRefGroup = A30000000000000000000003 /* Products */;
 			projectDirPath = "";
@@ -620,6 +621,7 @@
 				A10000000000000000009037 /* LibraryModels.swift in Sources */,
 				A10000000000000000009038 /* Catalog.swift in Sources */,
 				A10000000000000000009039 /* ContentSync.swift in Sources */,
+				A10000000000000000009074 /* PageListQueryService.swift in Sources */,
 				A10000000000000000009043 /* SiteHTTPError.swift in Sources */,
 				A10000000000000000009044 /* ArticleModels.swift in Sources */,
 				A10000000000000000009063 /* FatesClassModels.swift in Sources */,
@@ -635,14 +637,12 @@
 				A10000000000000000009069 /* SacredStonesClassSchemeParser.swift in Sources */,
 				A10000000000000000009072 /* TwoStageClassGuideParser.swift in Sources */,
 				A10000000000000000009049 /* NativeArticleView.swift in Sources */,
-				A10000000000000000009065 /* FatesClassesView.swift in Sources */,
-				A10000000000000000009066 /* FatesClassesViewModel.swift in Sources */,
 				A10000000000000000009070 /* ClassSchemeView.swift in Sources */,
 				A10000000000000000009071 /* ClassSchemeViewModel.swift in Sources */,
 				A10000000000000000009050 /* FrozenArticleTable.swift in Sources */,
 				A10000000000000000009051 /* TableCellText.swift in Sources */,
 				A10000000000000000009052 /* TableCellImages.swift in Sources */,
-				A10000000000000000009053 /* LocalImageLoader.swift in Sources */,
+				A10000000000000000009053 /* ImageLoadingService.swift in Sources */,
 				A10000000000000000009054 /* ArticleImageView.swift in Sources */,
 				A10000000000000000009056 /* SerenesForestApp.swift in Sources */,
 			);
@@ -665,41 +665,105 @@
 		A70000000000000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
 		A70000000000000000000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
 		A70000000000000000000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2F000000000000000000001 /* Signing.xcconfig */;
+			baseConfigurationReference = A2F000000000000000000001 /* Config/Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Serenes Forest";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.SerenesForestCompanion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -711,17 +775,20 @@
 		};
 		A70000000000000000000004 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2F000000000000000000001 /* Signing.xcconfig */;
+			baseConfigurationReference = A2F000000000000000000001 /* Config/Signing.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Serenes Forest";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.SerenesForestCompanion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -759,6 +826,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Sources/LocalPackages/SerenesParsing;
 		};
+		A49999999999999999999992 /* XCLocalSwiftPackageReference "Sources/LocalPackages/SerenesNavigation" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Sources/LocalPackages/SerenesNavigation;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -766,6 +837,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A49999999999999999999990 /* XCLocalSwiftPackageReference "Sources/LocalPackages/SerenesParsing" */;
 			productName = SerenesParsing;
+		};
+		A49999999999999999999993 /* SerenesNavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A49999999999999999999992 /* XCLocalSwiftPackageReference "Sources/LocalPackages/SerenesNavigation" */;
+			productName = SerenesNavigation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -1,4 +1,5 @@
 import SwiftUI
+import SerenesNavigation
 import Observation
 import SwiftData
 import Translation
@@ -15,18 +16,19 @@ struct GameDetailView: View {
     @State var viewModel = GameDetailViewModel()
     @Bindable var game: Game
     @AppStorage("SerenesForest.language") var language = "en"
+    @AppStorage(RecentGamesHistory.storageKey) private var recentGameSlugs = ""
     @Environment(\.modelContext) var context
     @Environment(ContentSync.self) var sync: ContentSync
     @Query var pages: [ContentPage]
     @Query var wikiMemberships: [WikiGamePage]
+    @Query(filter: #Predicate<ContentPage> { $0.category == "General" || $0.category == "Media" })
+    private var sharedPages: [ContentPage]
     @Environment(\.openURL) var openURL
     @SceneStorage var expandedSectionID: Int
-    @SceneStorage var storedScrollAnchor: String
 
     init(game: Game) {
         self.game = game
         _expandedSectionID = SceneStorage(wrappedValue: -1, "SerenesForest.expanded.\(game.slug)")
-        _storedScrollAnchor = SceneStorage(wrappedValue: "", "SerenesForest.gameScroll.\(game.slug)")
         let slug = game.slug
         _pages = Query(filter: #Predicate<ContentPage> { $0.gameSlug == slug })
         _wikiMemberships = Query(filter: #Predicate<WikiGamePage> { $0.gameSlug == slug })
@@ -38,19 +40,17 @@ struct GameDetailView: View {
     var theme: GameTheme { GameTheme.forGame(game.slug) }
     var visibleSections: [GameNavigationSection] { viewModel.visibleSections(gameSlug: game.slug) }
 
-    var scrollAnchor: Binding<String?> {
-        Binding(get: { storedScrollAnchor.isEmpty ? nil : storedScrollAnchor },
-                set: { storedScrollAnchor = $0 ?? "" })
-    }
     var navigationSourceTexts: [String] { viewModel.navigationSourceTexts }
 
     var body: some View {
         let home = viewModel.homePage(for: game, pages: pages)
-        let wikiSections = viewModel.wikiSections(pages: pages, memberships: wikiMemberships)
+        let wikiSections = viewModel.wikiSections(pages: pages, memberships: wikiMemberships,
+                                                  gameSlug: game.slug)
         let wikiCount = viewModel.wikiArticleCount(in: wikiSections)
         let sectionRows = viewModel.sectionRows(gameSlug: game.slug)
+        let navigationPages = pages + sharedPages
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            LazyVStack(alignment: .leading, spacing: 24) {
                 gameHero
                 if viewModel.hasRoutes(for: game) {
                     Picker(Constants.route, selection: $viewModel.selectedFatesRoute) {
@@ -62,7 +62,7 @@ struct GameDetailView: View {
                     .onChange(of: viewModel.selectedFatesRoute) { _, _ in expandedSectionID = -1 }
                 }
                 sectionHeading(Constants.gameGuide, subtitle: AppText.count(visibleSections.count, english: Constants.sectionsCount.english, russian: Constants.sectionsCount.russian))
-                VStack(spacing: 12) {
+                LazyVStack(spacing: 12) {
                     ForEach(sectionRows.indices, id: \.self) { rowIndex in
                         let row = sectionRows[rowIndex]
                         HStack(alignment: .top, spacing: 12) {
@@ -85,7 +85,7 @@ struct GameDetailView: View {
                                     .padding(.horizontal, 8)
                                 VStack(spacing: 3) {
                                     ForEach(expanded.items) { item in
-                                        GameNavigationRow(item: item, pages: pages,
+                                        GameNavigationRow(item: item, pages: navigationPages,
                                                           tint: theme.color(for: style))
                                     }
                                 }
@@ -97,7 +97,6 @@ struct GameDetailView: View {
                         }
                     }
                 }
-                .scrollTargetLayout()
                 if !wikiSections.isEmpty {
                     sectionHeading(Constants.fireEmblemWiki, subtitle: AppText.count(wikiCount, english: Constants.articlesCount.english, russian: Constants.articlesCount.russian))
                     ForEach(wikiSections) { section in
@@ -110,7 +109,7 @@ struct GameDetailView: View {
                         )) {
                             LazyVStack(spacing: 8) {
                                 ForEach(section.entries) { entry in
-                                    NavigationLink { PageDetailView(page: entry.page) } label: {
+                                    NavigationLink(value: PageRoute.article(entry.page.url)) {
                                         PageRow(page: entry.page, chapterLabel: entry.label)
                                     }
                                         .buttonStyle(.plain)
@@ -134,16 +133,17 @@ struct GameDetailView: View {
             }
             .padding(24)
             .frame(maxWidth: 850)
-            .background(GeometryReader { geometry in
-                Color.clear.preference(key: GameGuideWidthKey.self, value: geometry.size.width)
-            })
+            .onGeometryChange(for: CGFloat.self) { geometry in
+                geometry.size.width
+            } action: { width in
+                viewModel.guideWidth = width
+            }
             .frame(maxWidth: .infinity)
         }
-        .scrollPosition(id: viewModel.sections.isEmpty ? .constant(nil) : scrollAnchor)
-        .onPreferenceChange(GameGuideWidthKey.self) { viewModel.guideWidth = $0 }
+        .pauseImageLoadingDuringScroll()
         .environment(\.navigationTranslations, viewModel.navigationTranslations)
         .background {
-            if #available(iOS 18.0, macOS 15.0, *), TranslationAvailability.isSupported,
+            if TranslationAvailability.isSupported,
                language == "ru", !viewModel.sections.isEmpty,
                viewModel.navigationTranslations.count < navigationSourceTexts.count {
                 Color.clear.translationTask(source: Locale.Language(identifier: "en"),
@@ -153,6 +153,9 @@ struct GameDetailView: View {
             }
         }
         .navigationTitle("")
+        .onAppear {
+            recentGameSlugs = RecentGamesHistory.record(game.slug, in: recentGameSlugs)
+        }
         .tint(theme.accent)
         .toolbar {
             if let home {

@@ -1,6 +1,8 @@
 __pycache__/
 Resources/*.tmp
 BuildContent/
+Resources/PreloadedLibrary/*.store-wal
+Resources/PreloadedLibrary/*.store-shm
 .DS_Store
 *.xcuserstate
 **/xcuserdata/

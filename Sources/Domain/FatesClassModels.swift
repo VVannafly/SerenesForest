@@ -1,18 +1,18 @@
 import Foundation
 
-struct FatesClassEntry: Codable {
+struct FatesClassEntry: Codable, Sendable {
     let name: String
     let runs: [ArticleRun]
     let artworkURL: URL?
     let iconURLs: [URL]
 }
 
-struct FatesClassGroup: Codable {
+struct FatesClassGroup: Codable, Sendable {
     let base: FatesClassEntry
     let promotions: [FatesClassEntry]
 }
 
-struct FatesClassGuide: Codable {
+struct FatesClassGuide: Codable, Sendable {
     let baseTitle: [ArticleRun]
     let promotedTitle: [ArticleRun]
     let groups: [FatesClassGroup]

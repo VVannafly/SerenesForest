@@ -26,7 +26,6 @@ enum ArticlePresentationMapper {
             case .list(let ordered, let items): .list(ordered, items)
             case .image(let url, let alt): .image(url, alt)
             case .table(let rows): .table(table(rows))
-            case .fatesClasses(let guide): .fatesClasses(guide)
             case .classScheme(let scheme): .classScheme(scheme)
             case .tabs(let tabs): .tabs(tabs.map { ArticleTabPresentation(title: $0.title, blocks: map($0.blocks)) })
             case .quote(let runs): .quote(runs)

@@ -8,8 +8,8 @@ private enum Constants {
     static let russian = "ru"
     static let unavailableInSimulator = "Перевод статьи недоступен в симуляторе."
     static let translating = "Перевод статьи…"
-    static let requiresNewOS = "Перевод статей доступен с iOS 18 или macOS 15."
     static let partial = "Часть фрагментов не переведена. Прогресс сохранён."
+    static let legacyClassTag = Data("\"fatesClasses\"".utf8)
     static func progress(_ done: Int, total: Int) -> String { "Перевод статьи: \(done)/\(total)" }
     static func failed(_ message: String) -> String { "Не удалось перевести статью: \(message)" }
 }
@@ -44,7 +44,8 @@ extension PageDetailViewModel {
                 ? NativeArticleParser.removingObsoletePageTabs(original)
                 : (blocks: original, changed: false)
             let blocks = cleaned.blocks
-            let encoded = decoded == nil || cleaned.changed || needsRepair
+            let encoded = decoded == nil || cleaned.changed || needsRepair ||
+                (stored?.range(of: Constants.legacyClassTag) != nil)
                 ? try? JSONEncoder().encode(blocks) : nil
             var references = Set<String>()
             func collectImages(_ blocks: [ArticleBlock]) {
@@ -58,12 +59,6 @@ extension PageDetailViewModel {
                                 references.insert(SiteScope.canonical(url)?.absoluteString ?? url.absoluteString)
                             }
                         }
-                    case .fatesClasses(let guide):
-                        for entry in guide.groups.flatMap({ [$0.base] + $0.promotions }) + guide.unassignedPromotions {
-                            for url in ([entry.artworkURL].compactMap { $0 } + entry.iconURLs) {
-                                references.insert(SiteScope.canonical(url)?.absoluteString ?? url.absoluteString)
-                            }
-                        }
                     case .classScheme(let scheme):
                         func collect(_ branch: ClassSchemeBranch) {
                             let urls = [branch.entry.artworkURL].compactMap { $0 } + branch.entry.iconURLs +
@@ -74,6 +69,11 @@ extension PageDetailViewModel {
                             branch.children.forEach(collect)
                         }
                         scheme.roots.forEach(collect)
+                        for entry in scheme.unassignedEntries {
+                            for url in [entry.artworkURL].compactMap({ $0 }) + entry.iconURLs {
+                                references.insert(SiteScope.canonical(url)?.absoluteString ?? url.absoluteString)
+                            }
+                        }
                     case .tabs(let tabs):
                         for tab in tabs { collectImages(tab.blocks) }
                     default: break
@@ -94,7 +94,7 @@ extension PageDetailViewModel {
                     ? NativeArticleParser.removingObsoletePageTabs(translated)
                     : (blocks: translated, changed: false)
                 showArticle(cleaned.blocks)
-                if cleaned.changed {
+                if cleaned.changed || storedRussian.range(of: Constants.legacyClassTag) != nil {
                     page.russianContent = try? JSONEncoder().encode(cleaned.blocks)
                     page.russianPlainText = ArticleTranslation.plainText(cleaned.blocks)
                     try? context.save()
@@ -113,10 +113,8 @@ extension PageDetailViewModel {
                 translatedTitle = page.russianTitle
                 if !TranslationAvailability.isSupported {
                     translationError = Constants.unavailableInSimulator
-                } else if #available(iOS 18.0, macOS 15.0, *) {
-                    translationProgress = Constants.translating
                 } else {
-                    translationError = Constants.requiresNewOS
+                    translationProgress = Constants.translating
                 }
             }
         } else {
@@ -139,7 +137,6 @@ extension PageDetailViewModel {
         await loadArticleAssets(context: context)
     }
 
-    @available(iOS 18.0, macOS 15.0, *)
     func translateArticle(using session: TranslationSession, page: ContentPage, context: ModelContext, language: String) async {
         guard language == Constants.russian, page.russianContent == nil, !translationAttempted else { return }
         translationAttempted = true

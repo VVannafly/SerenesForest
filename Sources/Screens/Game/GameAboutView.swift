@@ -1,4 +1,5 @@
 import SwiftUI
+import SerenesNavigation
 
 private enum Constants {
     static var readFullArticle: String { AppText.localized( "Read full article") }
@@ -35,7 +36,7 @@ struct GameAboutView: View {
                         .font(.body)
                         .textSelection(.enabled)
                 }
-                NavigationLink { PageDetailView(page: page) } label: {
+                NavigationLink(value: PageRoute.article(page.url)) {
                     Label(Constants.readFullArticle, systemImage: "text.book.closed")
                 }
                 .buttonStyle(.borderedProminent)
@@ -50,6 +51,7 @@ struct GameAboutView: View {
             .frame(maxWidth: 800)
             .frame(maxWidth: .infinity)
         }
+        .pauseImageLoadingDuringScroll()
         .navigationTitle(Constants.aboutTheGame)
         .tint(theme.accent)
         #if os(iOS)

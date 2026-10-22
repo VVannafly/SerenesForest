@@ -109,6 +109,7 @@ enum Destination: String, Hashable, CaseIterable {
     case discover = "Discover"
     case library = "Library"
     case favorites = "Favorites"
+    case menu = "Menu"
     case savedPages = "Saved pages"
     case news = "News"
     case guides = "Guides"
@@ -122,6 +123,7 @@ enum Destination: String, Hashable, CaseIterable {
         case .discover: "sparkles.rectangle.stack"
         case .library: "square.grid.2x2.fill"
         case .favorites: "heart.fill"
+        case .menu: "line.3.horizontal"
         case .savedPages: "bookmark.fill"
         case .news: "newspaper.fill"
         case .guides: "text.book.closed.fill"
@@ -131,6 +133,10 @@ enum Destination: String, Hashable, CaseIterable {
         case .settings: "gearshape.fill"
         }
     }
+
+    static let menuItems: [Destination] = [
+        .savedPages, .news, .guides, .wiki, .allPages, .media, .settings
+    ]
 }
 
 enum GameSection: String {

@@ -6,13 +6,6 @@ import UIKit
 import AppKit
 #endif
 
-struct TableRowsKey: PreferenceKey {
-    static var defaultValue: [Int: CGRect] = [:]
-    static func reduce(value: inout [Int: CGRect], nextValue: () -> [Int: CGRect]) {
-        value.merge(nextValue(), uniquingKeysWith: { _, new in new })
-    }
-}
-
 struct FrozenArticleTable: View {
     let rows: [[ArticleCell]]
     let kind: ArticleTableKind
@@ -101,26 +94,28 @@ struct FrozenArticleTable: View {
         ScrollView(isLong ? [.horizontal, .vertical] : .horizontal) {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ForEach(rows.indices, id: \.self) { index in
-                    tableRow(rows[index], index: index)
-                        .background(GeometryReader { geometry in
-                            Color.clear.preference(key: TableRowsKey.self,
-                                value: [index: geometry.frame(in: .named("articleTable"))])
-                        })
+                    if index == headerRowIndex {
+                        tableRow(rows[index], index: index)
+                            .onGeometryChange(for: CGRect.self) { geometry in
+                                geometry.frame(in: .named("articleTable"))
+                            } action: { frame in
+                                if abs(frame.height - headerHeight) > 0.5 { headerHeight = frame.height }
+                                let y = max(frame.minY, 0)
+                                if abs(y - headerY) > 0.5 { headerY = y }
+                            }
+                    } else {
+                        tableRow(rows[index], index: index)
+                    }
                 }
             }
             .frame(width: tableWidth, alignment: .leading)
+            .onGeometryChange(for: CGFloat.self) { geometry in
+                geometry.frame(in: .named("articleTable")).minX
+            } action: { x in
+                if abs(x - horizontalOffset) > 0.5 { horizontalOffset = x }
+            }
         }
         .coordinateSpace(name: "articleTable")
-        .onPreferenceChange(TableRowsKey.self) { frames in
-            if let x = frames.values.first?.minX, abs(x - horizontalOffset) > 0.5 {
-                horizontalOffset = x
-            }
-            if let header = frames[headerRowIndex] {
-                if abs(header.height - headerHeight) > 0.5 { headerHeight = header.height }
-                let y = max(header.minY, 0)
-                if abs(y - headerY) > 0.5 { headerY = y }
-            }
-        }
         .overlay(alignment: .topLeading) {
             if isLong, rows.indices.contains(headerRowIndex) {
                 tableRow(rows[headerRowIndex], index: headerRowIndex)

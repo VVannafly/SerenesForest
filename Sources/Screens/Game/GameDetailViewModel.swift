@@ -2,13 +2,16 @@ import Foundation
 import Observation
 import SwiftUI
 import SwiftData
-import Translation
+@preconcurrency import Translation
 
 private enum Constants {
     static let fatesSlug = "fire-emblem-fates"
     static let wikiPrefix = "Wiki · "
     static let wikiChapters = "Wiki · Chapters"
     static let wikiActs = "Wiki · Acts"
+    static let wikiSeries = "Wiki · Series"
+    static let wikiMechanics = "Wiki · Mechanics"
+    static let mechanicsGames: Set<String> = ["awakening", "shadow-dragon", "light-and-shadow"]
     static let general = "General"
 }
 
@@ -31,7 +34,7 @@ final class GameDetailViewModel {
         GameOverview(page: homePage(for: game, pages: pages))
     }
 
-    func wikiSections(pages: [ContentPage], memberships: [WikiGamePage]) -> [WikiGuideSection] {
+    func wikiSections(pages: [ContentPage], memberships: [WikiGamePage], gameSlug: String) -> [WikiGuideSection] {
         var unique: [String: ContentPage] = [:]
         for page in pages where page.category.hasPrefix(Constants.wikiPrefix) && page.isDownloaded {
             unique[page.url] = page
@@ -42,7 +45,10 @@ final class GameDetailViewModel {
             links[page.url] = membership
             if page.category.hasPrefix(Constants.wikiPrefix), page.isDownloaded { unique[page.url] = page }
         }
-        let grouped = Dictionary(grouping: unique.values, by: \.category)
+        let grouped = Dictionary(grouping: unique.values) { page in
+            page.category == Constants.wikiSeries && Constants.mechanicsGames.contains(gameSlug)
+                ? Constants.wikiMechanics : page.category
+        }
         return grouped.keys.sorted().map { title in
             let entries = (grouped[title] ?? []).map { page in
                 WikiGuideEntry(page: page, position: links[page.url]?.chapterPosition,
@@ -131,7 +137,6 @@ final class GameDetailViewModel {
         }
     }
 
-    @available(iOS 18.0, macOS 15.0, *)
     func translateNavigation(
         using session: TranslationSession,
         home: ContentPage?,
@@ -148,7 +153,9 @@ final class GameDetailViewModel {
             for start in stride(from: 0, to: missing.count, by: 32) {
                 try Task.checkCancellation()
                 let chunk = Array(missing[start..<min(start + 32, missing.count)])
-                let requests = chunk.enumerated().map { index, value in
+                // The framework's Request is a value type without Sendable annotation.
+                // This batch is passed once and never mutated concurrently.
+                nonisolated(unsafe) let requests = chunk.enumerated().map { index, value in
                     TranslationSession.Request(sourceText: value, clientIdentifier: String(index))
                 }
                 for response in try await session.translations(from: requests) {

@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import SerenesNavigation
 
 private enum Constants {
     static var noSavedArtwork: String { AppText.localized( "No saved artwork") }
@@ -19,7 +20,7 @@ struct GameArtworkView: View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 110, maximum: 180), spacing: 12)], spacing: 12) {
                 ForEach(artwork) { asset in
-                    NavigationLink { AssetDetailView(asset: asset) } label: {
+                    NavigationLink(value: PageRoute.asset(asset.url)) {
                         VStack(alignment: .leading, spacing: 6) {
                             ArtworkThumbnail(asset: asset)
                                 .frame(height: 110)
@@ -42,6 +43,7 @@ struct GameArtworkView: View {
             .font(.caption)
             .padding(.bottom, 20)
         }
+        .pauseImageLoadingDuringScroll()
         .navigationTitle(navigationTranslations[title] ?? title)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)

@@ -15,12 +15,18 @@ struct ArticleImageView: View {
     let onLink: (URL) -> Void
     var thumbnailSize: CGFloat? = nil
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.imageLoadingPaused) private var imageLoadingPaused
     @State private var image: CGImage?
+    @State private var loadedKey: String?
+
+    private var imageKey: String {
+        "\(assetURL)|\(fetchedAt?.timeIntervalSinceReferenceDate ?? 0)|\(thumbnailSize ?? -1)|\(compact)"
+    }
 
     var body: some View {
         let displaySize: CGFloat? = thumbnailSize ?? (compact ? 28 : nil)
         Button { onLink(url) } label: {
-            if let image {
+            if let image, loadedKey == imageKey {
                 Image(decorative: image, scale: 1)
                     .resizable()
                     .scaledToFit()
@@ -37,21 +43,24 @@ struct ArticleImageView: View {
         }
         .buttonStyle(.plain)
         .frame(maxWidth: displaySize ?? .infinity, alignment: .leading)
-        .task(id: fetchedAt) {
-            image = nil
+        .task(id: "\(imageKey)|\(imageLoadingPaused)") {
+            guard !imageLoadingPaused, loadedKey != imageKey else { return }
             let container = modelContext.container
             let maxPixelSize = thumbnailSize.map { Int($0 * 3) } ?? (compact ? 84 : 1800)
             let thumbnail: CGImage?
             if let fetchedAt {
-                thumbnail = await LocalImageLoader.shared.assetImage(
+                thumbnail = await ImageLoadingService.shared.assetImage(
                     assetURL: assetURL, fetchedAt: fetchedAt, maxPixelSize: maxPixelSize, container: container
                 )
             } else {
-                thumbnail = await LocalImageLoader.shared.missingAssetImage(
+                thumbnail = await ImageLoadingService.shared.missingAssetImage(
                     assetURL: assetURL, maxPixelSize: maxPixelSize, container: container
                 )
             }
-            if !Task.isCancelled { image = thumbnail }
+            if !Task.isCancelled, let thumbnail {
+                image = thumbnail
+                loadedKey = imageKey
+            }
         }
     }
 }

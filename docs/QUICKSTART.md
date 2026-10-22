@@ -2,8 +2,8 @@
 
 ## Requirements
 
-- macOS with Xcode and an iOS 17+ simulator, or a Mac running macOS 14+.
-- Git LFS. The bundled SwiftData library is about 1.3 GB and is stored in LFS.
+- macOS with Xcode 26+ and an iOS 26+ simulator, or a Mac running macOS 26+.
+- Git LFS. The bundled SwiftData library is about 196 MiB and is stored in LFS.
 
 ## Build and run
 
@@ -21,6 +21,7 @@ For a physical device, choose your Apple development team and set your own bundl
 - `Sources/Screens`: SwiftUI screens and `@Observable` view models by feature.
 - `Sources/Data`: preloaded catalog, sync, translation, and image loading.
 - `Sources/LocalPackages/SerenesParsing`: standalone parsing module.
+- `Sources/LocalPackages/SerenesNavigation`: article routes and navigation state for the SwiftUI stack.
 
 Run `swift test --package-path Sources/LocalPackages/SerenesParsing` for the module tests. The article library and media URL index live in `Resources/PreloadedLibrary`; images cache on demand; source JSON build inputs are generated separately and are not part of the repository.
 

@@ -3,6 +3,7 @@ import SwiftUI
 private enum Constants {
     static let arrow = "arrow.down"
     static var upgradeItem: String { AppText.localized("Upgrade item") }
+    static var otherPromotedClasses: String { AppText.localized("Other promoted classes") }
     static let artworkSize: CGFloat = 58
 }
 
@@ -22,6 +23,17 @@ struct ClassSchemeView: View {
                     .padding(14)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+            }
+            if !viewModel.scheme.unassignedEntries.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(Constants.otherPromotedClasses).font(.headline)
+                    ForEach(viewModel.scheme.unassignedEntries, id: \.name) { item in
+                        entry(item)
+                    }
+                }
+                .padding(14)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
             }
         }
     }

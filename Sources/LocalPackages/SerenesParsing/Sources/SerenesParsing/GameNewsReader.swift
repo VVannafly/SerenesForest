@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GameNewsItem {
+public struct GameNewsItem: Sendable {
     public var title = ""
     public var url = ""
     public var published = ""

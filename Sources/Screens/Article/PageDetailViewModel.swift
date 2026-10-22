@@ -1,6 +1,14 @@
 import Foundation
 import Observation
+import SerenesParsing
 import SwiftUI
+import SwiftData
+
+enum ArticleLinkDestination {
+    case article(String)
+    case asset(ContentAsset)
+    case external(URL)
+}
 
 @MainActor @Observable
 final class PageDetailViewModel {
@@ -12,12 +20,37 @@ final class PageDetailViewModel {
     var translationError: String?
     var articleAssets: [String: Date] = [:]
     var imageURLs: [String] = []
-    var linkedPage: ContentPage?
-    var showLinkedPage = false
     var linkedAsset: ContentAsset?
     var externalLink: URL?
     var showExternalLinkPrompt = false
-    var trailTarget: ArticleTrailTarget?
+
+    func destination(for rawURL: URL, in context: ModelContext) -> ArticleLinkDestination {
+        if rawURL.host?.lowercased() == "fireemblemwiki.org" {
+            var components = URLComponents(url: rawURL, resolvingAgainstBaseURL: false)
+            components?.query = nil
+            components?.fragment = nil
+            if let canonical = components?.url?.absoluteString,
+               let saved = try? context.fetch(FetchDescriptor<ContentPage>(
+                predicate: #Predicate { $0.url == canonical })).first,
+               saved.isDownloaded {
+                return .article(saved.url)
+            }
+        }
+        guard let url = SiteScope.canonical(rawURL) else { return .external(rawURL) }
+        let canonical = url.absoluteString
+        if SiteScope.isAsset(url),
+           let asset = try? context.fetch(FetchDescriptor<ContentAsset>(
+            predicate: #Predicate { $0.url == canonical })).first {
+            return .asset(asset)
+        }
+        if SiteScope.isPage(url),
+           let saved = try? context.fetch(FetchDescriptor<ContentPage>(
+            predicate: #Predicate { $0.url == canonical })).first,
+           saved.isDownloaded {
+            return .article(saved.url)
+        }
+        return .external(url)
+    }
 
     func showArticle(_ blocks: [ArticleBlock]?) {
         articleBlocks = blocks

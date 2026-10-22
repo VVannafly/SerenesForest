@@ -6,7 +6,7 @@ struct TableCellText: View, Equatable {
     let bold: Bool
     @State private var showsFullText = false
 
-    static func == (lhs: TableCellText, rhs: TableCellText) -> Bool {
+    nonisolated static func == (lhs: TableCellText, rhs: TableCellText) -> Bool {
         lhs.runs == rhs.runs && lhs.bold == rhs.bold
     }
 

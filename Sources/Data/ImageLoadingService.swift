@@ -9,14 +9,6 @@ final class ArticleThumbnail: NSObject {
     init(_ image: CGImage) { self.image = image }
 }
 
-enum ArticleThumbnailCache {
-    static let images: NSCache<NSString, ArticleThumbnail> = {
-        let cache = NSCache<NSString, ArticleThumbnail>()
-        cache.totalCostLimit = 64 * 1024 * 1024
-        return cache
-    }()
-}
-
 actor ArticleDecodeLimiter {
     static let shared = ArticleDecodeLimiter()
     private var active = 0
@@ -55,8 +47,13 @@ actor ArticleDownloadLimiter {
     }
 }
 
-actor LocalImageLoader {
-    static let shared = LocalImageLoader()
+actor ImageLoadingService {
+    static let shared = ImageLoadingService()
+    private let images: NSCache<NSString, ArticleThumbnail> = {
+        let cache = NSCache<NSString, ArticleThumbnail>()
+        cache.totalCostLimit = 64 * 1024 * 1024
+        return cache
+    }()
     private enum Constants {
         static let archivePrefix = "https://web.archive.org/web/20261001id_/"
         static let userAgent = "SerenesForestCompanion/1.0 (personal reference library)"
@@ -77,7 +74,7 @@ actor LocalImageLoader {
         isClearingImages = true
         cacheGeneration += 1
         defer {
-            ArticleThumbnailCache.images.removeAllObjects()
+            images.removeAllObjects()
             URLCache.shared.removeAllCachedResponses()
             failedDownloads.removeAll()
             isClearingImages = false
@@ -129,10 +126,13 @@ actor LocalImageLoader {
         guard !isClearingImages else { return nil }
         guard let url = URL(string: assetURL), SiteScope.canonical(url) != nil,
               SiteScope.isAsset(url) else { return nil }
-        let context = ModelContext(container)
-        let descriptor = FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == assetURL })
-        if let existing = try? context.fetch(descriptor).first,
-           let fetchedAt = existing.fetchedAt {
+        let fetchedAt = await Task.detached(priority: .utility) { () -> Date? in
+            let context = ModelContext(container)
+            let descriptor = FetchDescriptor<ContentAsset>(predicate: #Predicate { $0.url == assetURL })
+            return try? context.fetch(descriptor).first?.fetchedAt
+        }.value
+        guard !Task.isCancelled else { return nil }
+        if let fetchedAt {
             return await assetImage(assetURL: assetURL, fetchedAt: fetchedAt,
                                     maxPixelSize: maxPixelSize, container: container)
         }
@@ -194,7 +194,7 @@ actor LocalImageLoader {
                             fetch: @escaping @Sendable () async -> CGImage?) async -> CGImage? {
         let generation = cacheGeneration
         let cacheKey = key as NSString
-        if let cached = ArticleThumbnailCache.images.object(forKey: cacheKey) { return cached.image }
+        if let cached = images.object(forKey: cacheKey) { return cached.image }
         guard !Task.isCancelled else { return nil }
         let token = UUID()
         let task: Task<CGImage?, Never>
@@ -216,7 +216,7 @@ actor LocalImageLoader {
             return nil
         }
         if let image, !Task.isCancelled {
-            ArticleThumbnailCache.images.setObject(ArticleThumbnail(image), forKey: cacheKey,
+            images.setObject(ArticleThumbnail(image), forKey: cacheKey,
                                                    cost: image.bytesPerRow * image.height)
         } else if !Task.isCancelled {
             failedDownloads[assetURL] = .now
@@ -243,7 +243,7 @@ actor LocalImageLoader {
     private func load(key: String, decode: @escaping @Sendable () -> CGImage?) async -> CGImage? {
         let generation = cacheGeneration
         let cacheKey = key as NSString
-        if let cached = ArticleThumbnailCache.images.object(forKey: cacheKey) { return cached.image }
+        if let cached = images.object(forKey: cacheKey) { return cached.image }
         guard !Task.isCancelled else { return nil }
         let token = UUID()
         let task: Task<CGImage?, Never>
@@ -274,7 +274,7 @@ actor LocalImageLoader {
             return nil
         }
         if let image, !Task.isCancelled {
-            ArticleThumbnailCache.images.setObject(ArticleThumbnail(image), forKey: cacheKey,
+            images.setObject(ArticleThumbnail(image), forKey: cacheKey,
                                                    cost: image.bytesPerRow * image.height)
         }
         drop(key: key, token: token)

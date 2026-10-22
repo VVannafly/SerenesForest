@@ -1,33 +1,63 @@
 import Foundation
 import Observation
-import SwiftUI
+import SwiftData
 
-private enum Constants { static let all = "All" }
+private enum Constants {
+    static let all = "All"
+}
 
 @MainActor @Observable
 final class WikiLibraryViewModel {
     var search = ""
     var selectedGroup = Constants.all
     var selectedGame = Constants.all
+    private(set) var groups = [Constants.all]
+    private(set) var pages: [PageListItem] = []
+    private(set) var totalCount: Int?
+    private(set) var hasMorePages = false
+    private(set) var isLoading = true
+    private(set) var errorMessage: String?
+    private var cursor = PageListCursor()
+    private var requestID = UUID()
 
-    func wikiPages(from allPages: [ContentPage]) -> [ContentPage] {
-        allPages.filter { $0.category.hasPrefix("Wiki · ") && $0.isDownloaded }
-    }
-
-    func groups(from allPages: [ContentPage]) -> [String] {
-        [Constants.all] + Set(wikiPages(from: allPages).map { $0.category.replacingOccurrences(of: "Wiki · ", with: "") }).sorted()
-    }
-
-    func pages(from allPages: [ContentPage]) -> [ContentPage] {
-        wikiPages(from: allPages).filter { page in
-            (selectedGroup == Constants.all || page.category == "Wiki · \(selectedGroup)") &&
-            (selectedGame == Constants.all || (page.wikiGameSlugs ?? "").contains("|\(selectedGame)|") || page.gameSlug == selectedGame) &&
-            AppText.matches(page, query: search)
-        }.sorted { lhs, rhs in
-            let left = Catalog.games.firstIndex { $0.0 == lhs.gameSlug } ?? Int.max
-            let right = Catalog.games.firstIndex { $0.0 == rhs.gameSlug } ?? Int.max
-            return left == right ? lhs.title.localizedStandardCompare(rhs.title) == .orderedAscending : left < right
+    func load(in container: ModelContainer) async {
+        let id = UUID()
+        requestID = id
+        pages = []
+        totalCount = nil
+        hasMorePages = false
+        errorMessage = nil
+        cursor = PageListCursor()
+        let scope = PageListScope.wiki(group: selectedGroup, game: selectedGame)
+        let query = search.trimmingCharacters(in: .whitespacesAndNewlines)
+        await fetch(in: container, scope: scope, search: query, requestID: id)
+        guard requestID == id, !Task.isCancelled else { return }
+        if let result = try? await PageListQueryService.metadata(in: container, scope: scope, search: query),
+           requestID == id, !Task.isCancelled {
+            totalCount = result.count
+            groups = result.categories
         }
     }
 
+    func loadMore(in container: ModelContainer) async {
+        guard !isLoading, hasMorePages else { return }
+        await fetch(in: container, scope: .wiki(group: selectedGroup, game: selectedGame),
+                    search: search.trimmingCharacters(in: .whitespacesAndNewlines), requestID: requestID)
+    }
+
+    private func fetch(in container: ModelContainer, scope: PageListScope, search: String,
+                       requestID id: UUID) async {
+        isLoading = true
+        defer { if requestID == id { isLoading = false } }
+        do {
+            let batch = try await PageListQueryService.page(in: container, scope: scope,
+                                                            search: search, cursor: cursor)
+            guard requestID == id, !Task.isCancelled else { return }
+            pages.append(contentsOf: batch.items)
+            cursor = batch.cursor
+            hasMorePages = batch.hasMore
+        } catch {
+            if requestID == id, !Task.isCancelled { errorMessage = error.localizedDescription }
+        }
+    }
 }

@@ -1,4 +1,6 @@
 import SwiftUI
+import SerenesNavigation
+import SwiftData
 
 private enum Constants {
     static var noLinkedPage: String { AppText.localized("No linked page") }
@@ -13,36 +15,18 @@ struct GameNavigationRow: View {
     var tint: Color = Palette.accent
     @Environment(\.navigationTranslations) private var navigationTranslations
     @Environment(\.openURL) private var openURL
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        let destination = viewModel.destination(for: item, pages: pages)
+        let destination = viewModel.destination(for: item, pages: pages, context: modelContext)
         Group {
-            switch destination {
-            case .about(let page):
-                NavigationLink { GameAboutView(page: page) } label: { row(for: destination) }
+            if let route = viewModel.route(for: destination, item: item, pages: pages) {
+                NavigationLink(value: route) { row(for: destination) }
                     .buttonStyle(.plain)
-            case .topicItems:
-                NavigationLink { GameTopicItemsView(item: item, pages: pages, tint: tint) } label: { row(for: destination) }
-                    .buttonStyle(.plain)
-            case .newsFeed(let slug, let url):
-                NavigationLink { GameNewsFeedView(gameSlug: slug, categoryURL: url) } label: { row(for: destination) }
-                    .buttonStyle(.plain)
-            case .article(let page):
-                NavigationLink { PageDetailView(page: page) } label: { row(for: destination) }
-                    .buttonStyle(.plain)
-            case .artwork(let url):
-                NavigationLink { GameArtworkView(title: item.title, sourceURL: url) } label: { row(for: destination) }
-                    .buttonStyle(.plain)
-            case .external(let url):
+            } else if case .external(let url) = destination {
                 Button { openURL(url) } label: { row(for: destination) }
                     .buttonStyle(.plain)
-            case .section(let url):
-                NavigationLink { GameLinkView(title: item.title, url: url, pages: pages, tint: tint) } label: { row(for: destination) }
-                    .buttonStyle(.plain)
-            case .topicLinks:
-                NavigationLink { GameTopicLinksView(item: item, pages: pages, tint: tint) } label: { row(for: destination) }
-                    .buttonStyle(.plain)
-            case .none:
+            } else {
                 row(for: destination)
                     .accessibilityHint(Constants.noLinkedPage)
             }

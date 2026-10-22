@@ -5,7 +5,6 @@ import Translation
 private enum Constants {
     static var translatingLibrary: String { AppText.localized( "Translating library…") }
     static var translateSavedArticles: String { AppText.localized( "Translate saved articles") }
-    static var translationRequiresNewOS: String { AppText.localized( "Article translation requires iOS 18 or macOS 15.") }
     static var translationUnavailableInSimulator: String { AppText.localized( "Перевод статей недоступен в симуляторе. Откройте приложение на устройстве.") }
     static func translationProgress(pages: Int, totalPages: Int, fragments: Int, totalFragments: Int) -> String { "\(pages)/\(totalPages) статей · \(fragments)/\(totalFragments) фрагментов" }
     static var language: String { AppText.localized( "Language") }
@@ -45,7 +44,7 @@ struct SettingsView: View {
             }
             if language == "ru" {
                 Section(Constants.articleTranslation) {
-                    if #available(iOS 18.0, macOS 15.0, *), TranslationAvailability.isSupported {
+                    if TranslationAvailability.isSupported {
                         Button(viewModel.translatingLibrary ? Constants.translatingLibrary : Constants.translateSavedArticles) {
                             viewModel.translatedPages = 0
                             viewModel.totalPages = 0
@@ -66,9 +65,7 @@ struct SettingsView: View {
                             Text(translationMessage).font(.caption).foregroundStyle(.secondary)
                         }
                     } else {
-                        Text(TranslationAvailability.isSupported
-                             ? Constants.translationRequiresNewOS
-                             : Constants.translationUnavailableInSimulator)
+                        Text(Constants.translationUnavailableInSimulator)
                             .font(.caption).foregroundStyle(.secondary)
                     }
                 }
@@ -104,7 +101,7 @@ struct SettingsView: View {
             Text(Constants.clearImagesConfirmation)
         }
         .background {
-            if #available(iOS 18.0, macOS 15.0, *), TranslationAvailability.isSupported,
+            if TranslationAvailability.isSupported,
                language == "ru", viewModel.translatingLibrary {
                 Color.clear.translationTask(source: Locale.Language(identifier: "en"),
                                             target: Locale.Language(identifier: "ru")) { session in

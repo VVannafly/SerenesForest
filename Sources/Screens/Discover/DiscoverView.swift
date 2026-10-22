@@ -1,4 +1,5 @@
 import SwiftUI
+import SerenesNavigation
 import SwiftData
 
 private enum Constants {
@@ -17,13 +18,14 @@ private enum Constants {
     static var recentArticlesInYourLibrary: String { AppText.localized( "Recent articles in your library") }
     static var noNewsArticlesYet: String { AppText.localized( "No news articles yet") }
     static var checkUpdatesToAddRecent: String { AppText.localized( "Check updates to add recent posts.") }
-    static var exploreTheSeries: String { AppText.localized( "Explore the series") }
-    static var discover: String { AppText.localized( "Discover") }
+    static var exploreTheSeries: String { AppText.localized("Explore the series") }
+    static var discover: String { AppText.localized("Discovery") }
 }
 
 struct DiscoverView: View {
     var sync: ContentSync
     @State private var viewModel = DiscoverViewModel()
+    @AppStorage(RecentGamesHistory.storageKey) private var recentGameSlugs = ""
     @Query(sort: \Game.title) private var games: [Game]
     @Query(filter: #Predicate<ContentPage> { $0.category == "Game" }) private var overviewPages: [ContentPage]
     @Query(filter: #Predicate<ContentPage> { $0.category == "News" }) private var newsPages: [ContentPage]
@@ -31,6 +33,7 @@ struct DiscoverView: View {
     @Environment(\.horizontalSizeClass) private var sizeClass
 
     private var availableGames: [Game] { viewModel.availableGames(from: games) }
+    private var recentGames: [Game] { viewModel.recentGames(from: availableGames, stored: recentGameSlugs) }
 
     private var latestNews: [ContentPage] {
         viewModel.latestNews(from: newsPages)
@@ -38,6 +41,7 @@ struct DiscoverView: View {
 
     var body: some View {
         let overviews = viewModel.overviews(for: availableGames, pages: overviewPages)
+        let recent = recentGames
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
                 ZStack(alignment: .bottomLeading) {
@@ -89,7 +93,7 @@ struct DiscoverView: View {
                         .frame(maxWidth: .infinity)
                 } else {
                     ForEach(latestNews) { page in
-                        NavigationLink { PageDetailView(page: page) } label: { PageRow(page: page) }
+                        NavigationLink(value: PageRoute.article(page.url)) { PageRow(page: page) }
                             .buttonStyle(.plain)
                     }
                 }
@@ -99,9 +103,9 @@ struct DiscoverView: View {
                     Spacer()
                 }
                 ScrollView(.horizontal) {
-                    HStack(spacing: 14) {
-                        ForEach(viewModel.featuredGames(from: availableGames)) { game in
-                            NavigationLink { GameDetailView(game: game) } label: {
+                    LazyHStack(spacing: 14) {
+                        ForEach(recent) { game in
+                            NavigationLink(value: PageRoute.game(game.slug)) {
                                 GameCard(game: game, overview: overviews[game.slug])
                                     .frame(width: 190, height: 300)
                             }
@@ -116,6 +120,7 @@ struct DiscoverView: View {
             .frame(maxWidth: 1100)
             .frame(maxWidth: .infinity)
         }
+        .pauseImageLoadingDuringScroll()
         .navigationTitle("")
         .toolbar {
             ToolbarItem(placement: .principal) {

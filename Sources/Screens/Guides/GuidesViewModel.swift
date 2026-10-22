@@ -4,6 +4,7 @@ import SwiftUI
 
 @MainActor @Observable
 final class GuidesViewModel {
+    private static let pageSize = 25
     private static let gameTitles = Dictionary(uniqueKeysWithValues: Catalog.games.map { ($0.0, $0.1) })
     private static let gameOrder = Dictionary(uniqueKeysWithValues:
         Catalog.games.reversed().enumerated().map { ($0.element.0, $0.offset) })
@@ -14,6 +15,19 @@ final class GuidesViewModel {
     var expandedTopics: Set<String> = []
     var collapsedSearchGames: Set<String> = []
     var collapsedSearchTopics: Set<String> = []
+    private var visiblePageCounts: [String: Int] = [:]
+
+    func visiblePages(in topic: GuideTopic, id: String) -> ArraySlice<ContentPage> {
+        topic.pages.prefix(visiblePageCounts[id] ?? Self.pageSize)
+    }
+
+    func hasMorePages(in topic: GuideTopic, id: String) -> Bool {
+        (visiblePageCounts[id] ?? Self.pageSize) < topic.pages.count
+    }
+
+    func showMorePages(id: String) {
+        visiblePageCounts[id, default: Self.pageSize] += Self.pageSize
+    }
 
     func topicSymbol(_ title: String) -> String {
         if title == "Chapters" || title == "Maps" { return "map.fill" }
@@ -47,6 +61,7 @@ final class GuidesViewModel {
     func resetSearchExpansion() {
         collapsedSearchGames.removeAll()
         collapsedSearchTopics.removeAll()
+        visiblePageCounts.removeAll()
     }
 
     func pageCount(in games: [GuideGame]) -> Int {

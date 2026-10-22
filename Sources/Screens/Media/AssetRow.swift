@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct AssetRow: View {
-    let asset: ContentAsset
+    let asset: MediaAsset
     private let viewModel: AssetRowViewModel
 
-    init(asset: ContentAsset) {
+    init(asset: MediaAsset) {
         self.asset = asset
         viewModel = AssetRowViewModel(asset: asset)
     }

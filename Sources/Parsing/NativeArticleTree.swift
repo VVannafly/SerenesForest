@@ -18,8 +18,6 @@ extension NativeArticleParser {
             case .image(let url, _): represented[url, default: 0] += 1
             case .table(let rows):
                 for url in rows.flatMap({ $0 }).flatMap(\.imageURLs) { represented[url, default: 0] += 1 }
-            case .fatesClasses(let guide):
-                for url in guide.consumedImageURLs { represented[url, default: 0] += 1 }
             case .classScheme(let scheme):
                 for url in scheme.consumedImageURLs { represented[url, default: 0] += 1 }
             case .tabs(let tabs):
@@ -168,8 +166,9 @@ extension NativeArticleParser {
         while let first = output.first, first.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { output.removeFirst() }
         while let last = output.last, last.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { output.removeLast() }
         if !output.isEmpty {
-            output[0].text = output[0].text.trimmingCharacters(in: .whitespacesAndNewlines)
-            output[output.count - 1].text = output[output.count - 1].text.trimmingCharacters(in: .whitespacesAndNewlines)
+            output[0].text = String(output[0].text.drop(while: \.isWhitespace))
+            let lastIndex = output.count - 1
+            output[lastIndex].text = String(output[lastIndex].text.reversed().drop(while: \.isWhitespace).reversed())
         }
         return output.filter { !$0.text.isEmpty }
     }

@@ -1,4 +1,5 @@
 import SwiftUI
+import SerenesNavigation
 import Observation
 import SwiftData
 
@@ -8,6 +9,7 @@ private enum Constants {
     static var noGuidesFound: String { AppText.localized( "No guides found") }
     static var checkUpdatesToAddNew: String { AppText.localized( "Check updates to add new guides.") }
     static var searchGuides: String { AppText.localized( "Search guides") }
+    static var showMore: String { AppText.localized("Show more") }
 }
 
 struct GuidesView: View {
@@ -42,10 +44,15 @@ struct GuidesView: View {
                                 let topicID = "\(game.slug)|\(topic.id)"
                                 DisclosureGroup(isExpanded: topicExpansion(topicID)) {
                                     LazyVStack(alignment: .leading, spacing: 8) {
-                                        ForEach(topic.pages) { page in
-                                            NavigationLink { PageDetailView(page: page) } label: { PageRow(page: page) }
+                                        ForEach(viewModel.visiblePages(in: topic, id: topicID)) { page in
+                                            NavigationLink(value: PageRoute.article(page.url)) { PageRow(page: page) }
                                                 .buttonStyle(.plain)
                                                 .id(page.url)
+                                        }
+                                        if viewModel.hasMorePages(in: topic, id: topicID) {
+                                            Button(Constants.showMore) { viewModel.showMorePages(id: topicID) }
+                                                .frame(maxWidth: .infinity)
+                                                .padding(.vertical, 8)
                                         }
                                     }
                                     .padding(.top, 8)
@@ -86,9 +93,13 @@ struct GuidesView: View {
             .frame(maxWidth: 900)
             .frame(maxWidth: .infinity)
         }
+        .pauseImageLoadingDuringScroll()
         .scrollPosition(id: $scrollAnchor)
         .searchable(text: $viewModel.search, prompt: Constants.searchGuides)
-        .onChange(of: viewModel.search) { _, _ in viewModel.resetSearchExpansion() }
+        .onChange(of: viewModel.search) { _, _ in
+            viewModel.resetSearchExpansion()
+            scrollAnchor = nil
+        }
         .navigationTitle(Constants.guides)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)

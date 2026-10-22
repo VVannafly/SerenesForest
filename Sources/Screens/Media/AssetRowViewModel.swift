@@ -18,7 +18,7 @@ struct AssetRowViewModel {
     let kind: String
     let symbol: String
 
-    init(asset: ContentAsset) {
+    init(asset: MediaAsset) {
         let mime = asset.mimeType ?? ""
         symbol = mime.hasPrefix(Constants.imageMime) ? Constants.imageSymbol : Constants.fileSymbol
         if mime.hasPrefix(Constants.imageMime) { kind = Constants.image }

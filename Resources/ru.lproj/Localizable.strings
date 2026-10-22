@@ -1,4 +1,7 @@
 "Discover" = "Главная";
+"Discovery" = "Главная";
+"Favourites" = "Избранное";
+"Menu" = "Меню";
 "Library" = "Библиотека";
 "Favorites" = "Избранное";
 "Saved pages" = "Сохранённые страницы";
@@ -127,7 +130,6 @@
 "Article translation" = "Перевод статей";
 "Translate saved articles" = "Перевести сохранённые статьи";
 "Translating library…" = "Перевод библиотеки…";
-"Article translation requires iOS 18 or macOS 15." = "Для перевода статей нужна iOS 18 или macOS 15.";
 "Additional game background" = "Дополнительные сведения об игре";
 "Fire Emblem Wiki" = "Вики Fire Emblem";
 "World" = "Мир";
@@ -143,3 +145,4 @@
 "Wiki · Mechanics" = "Вики · Механики";
 "Wiki · Chapters" = "Вики · Главы";
 "Wiki · Series" = "Вики · Серия";
+"Show more" = "Показать ещё";

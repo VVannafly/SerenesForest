@@ -9,10 +9,11 @@ enum ClassesParserFactory {
         func parse(_ table: ArticleNode, source: URL) -> ArticleBlock? {
             switch self {
             case .fates:
-                return FatesClassesParser.parse(table, source: source).map(ArticleBlock.fatesClasses)
+                return FatesClassesParser.parse(table, source: source)
+                    .map { .classScheme(ClassSchemeBuilder.build(from: $0)) }
             case .awakening:
-                // Keep the stored block case compatible with existing article caches.
-                return AwakeningClassesParser.parse(table, source: source).map(ArticleBlock.fatesClasses)
+                return AwakeningClassesParser.parse(table, source: source)
+                    .map { .classScheme(ClassSchemeBuilder.build(from: $0)) }
             case .sacredStones:
                 return SacredStonesClassSchemeParser.parse(table, source: source).map(ArticleBlock.classScheme)
             }
@@ -20,7 +21,7 @@ enum ClassesParserFactory {
 
         func isRepresented(by block: ArticleBlock) -> Bool {
             switch (self, block) {
-            case (.fates, .fatesClasses), (.awakening, .fatesClasses),
+            case (.fates, .classScheme), (.awakening, .classScheme),
                  (.sacredStones, .classScheme):
                 return true
             case (_, .tabs(let tabs)):

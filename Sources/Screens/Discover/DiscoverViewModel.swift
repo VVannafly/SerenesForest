@@ -6,15 +6,18 @@ import SwiftData
 @MainActor @Observable
 final class DiscoverViewModel {
     private static let newsLimit = 3
-    private static let featuredGameLimit = 8
     private(set) var downloadedArticleCount = 0
 
     func availableGames(from games: [Game]) -> [Game] {
         games.filter { !$0.sourceURL.contains("/wiki/") }
     }
 
-    func featuredGames(from games: [Game]) -> [Game] {
-        Array(games.suffix(Self.featuredGameLimit).reversed())
+    func recentGames(from games: [Game], stored: String) -> [Game] {
+        let recent = RecentGamesHistory.games(from: games, stored: stored)
+        let recentSlugs = Set(recent.map(\.slug))
+        let featured = games.suffix(RecentGamesHistory.limit).reversed()
+            .filter { !recentSlugs.contains($0.slug) }
+        return Array((recent + featured).prefix(RecentGamesHistory.limit))
     }
 
     func latestNews(from pages: [ContentPage]) -> [ContentPage] {

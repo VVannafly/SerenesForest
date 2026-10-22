@@ -1,7 +1,17 @@
 import SerenesParsing
 import Foundation
 
+private enum Constants {
+    static let news = "News"
+}
+
 enum ContentPageMapper {
+    static func publishedAt(_ page: ContentPage) -> Date? {
+        guard page.category == Constants.news else { return nil }
+        let date = page.newsPublishedAt ?? newsDate(page)
+        return date == .distantPast ? nil : date
+    }
+
     static func newsDate(_ page: ContentPage) -> Date {
         let parts = URL(string: page.url)?.pathComponents ?? []
         if parts.count >= 4,
