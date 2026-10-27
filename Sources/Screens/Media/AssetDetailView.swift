@@ -5,6 +5,10 @@ import AVKit
 
 private enum Constants {
     static var imageUnavailable: String { AppText.localized( "Image unavailable") }
+    static var noInternetConnection: String { AppText.localized("No internet connection") }
+    static var connectAndTryAgain: String { AppText.localized("Connect to the internet and try again.") }
+    static var couldNotLoadImage: String { AppText.localized("Could not load this image.") }
+    static var tryAgain: String { AppText.localized("Try again") }
     static var loadingImage: String { AppText.localized( "Loading image") }
     static var fileUnavailable: String { AppText.localized( "File unavailable") }
     static var loadingFile: String { AppText.localized( "Loading file") }
@@ -25,7 +29,18 @@ struct AssetDetailView: View {
             if asset.fetchedAt != nil || asset.mimeType?.hasPrefix("image/") == true {
                 if asset.mimeType?.hasPrefix("image/") == true {
                     if let image = viewModel.image { Image(decorative: image, scale: 1).resizable().scaledToFit() }
-                    else if viewModel.loadFailed { ContentUnavailableView(Constants.imageUnavailable, systemImage: "photo") }
+                    else if viewModel.loadFailed {
+                        ContentUnavailableView {
+                            Label(viewModel.isOffline ? Constants.noInternetConnection : Constants.imageUnavailable,
+                                  systemImage: viewModel.isOffline ? "wifi.slash" : "photo")
+                        } description: {
+                            Text(viewModel.isOffline ? Constants.connectAndTryAgain : Constants.couldNotLoadImage)
+                        } actions: {
+                            Button(Constants.tryAgain) {
+                                Task { await viewModel.load(asset: asset, context: modelContext, retry: true) }
+                            }
+                        }
+                    }
                     else { ProgressView(Constants.loadingImage) }
                 } else if asset.mimeType == "application/pdf" {
                     if let pdfData = viewModel.pdfData { SavedPDFView(data: pdfData) }

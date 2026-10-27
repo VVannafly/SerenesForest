@@ -59,6 +59,7 @@ actor ImageLoadingService {
         static let userAgent = "SerenesForestCompanion/1.0 (personal reference library)"
         static let imageMimePrefix = "image/"
         static let maximumBytes: Int64 = 20_000_000
+        static let offlineRetryDelay: TimeInterval = 10
     }
     private struct Flight {
         let task: Task<CGImage?, Never>
@@ -66,6 +67,7 @@ actor ImageLoadingService {
     }
     private var inFlight: [String: Flight] = [:]
     private var failedDownloads: [String: Date] = [:]
+    private var offlineFailures: [String: Date] = [:]
     private var isClearingImages = false
     private var cacheGeneration = 0
 
@@ -77,6 +79,7 @@ actor ImageLoadingService {
             images.removeAllObjects()
             URLCache.shared.removeAllCachedResponses()
             failedDownloads.removeAll()
+            offlineFailures.removeAll()
             isClearingImages = false
         }
 
@@ -136,6 +139,8 @@ actor ImageLoadingService {
             return await assetImage(assetURL: assetURL, fetchedAt: fetchedAt,
                                     maxPixelSize: maxPixelSize, container: container)
         }
+        guard offlineFailures[assetURL].map({ Date.now.timeIntervalSince($0) > Constants.offlineRetryDelay }) ?? true
+        else { return nil }
         guard failedDownloads[assetURL].map({ Date.now.timeIntervalSince($0) > 3600 }) ?? true else { return nil }
         return await loadRemote(key: "remote:\(assetURL)|\(maxPixelSize)", assetURL: assetURL) {
             await ArticleDownloadLimiter.shared.acquire()
@@ -183,11 +188,31 @@ actor ImageLoadingService {
                     try context.save()
                     return image
                 } catch {
+                    if (error as? URLError)?.code == .notConnectedToInternet {
+                        await self.noteOfflineFailure(for: assetURL)
+                        return nil
+                    }
                     continue
                 }
             }
             return nil
         }
+    }
+
+    func retryMissingAssetImage(assetURL: String, maxPixelSize: Int,
+                                container: ModelContainer) async -> CGImage? {
+        failedDownloads.removeValue(forKey: assetURL)
+        offlineFailures.removeValue(forKey: assetURL)
+        return await missingAssetImage(assetURL: assetURL, maxPixelSize: maxPixelSize,
+                                       container: container)
+    }
+
+    func wasOfflineFailure(for assetURL: String) -> Bool {
+        offlineFailures[assetURL] != nil
+    }
+
+    private func noteOfflineFailure(for assetURL: String) {
+        offlineFailures[assetURL] = .now
     }
 
     private func loadRemote(key: String, assetURL: String,
@@ -203,6 +228,7 @@ actor ImageLoadingService {
             inFlight[key] = running
             task = running.task
         } else {
+            offlineFailures.removeValue(forKey: assetURL)
             task = Task.detached(priority: .utility) { await fetch() }
             inFlight[key] = Flight(task: task, waiters: [token])
         }
@@ -216,9 +242,11 @@ actor ImageLoadingService {
             return nil
         }
         if let image, !Task.isCancelled {
+            failedDownloads.removeValue(forKey: assetURL)
+            offlineFailures.removeValue(forKey: assetURL)
             images.setObject(ArticleThumbnail(image), forKey: cacheKey,
                                                    cost: image.bytesPerRow * image.height)
-        } else if !Task.isCancelled {
+        } else if !Task.isCancelled && offlineFailures[assetURL] == nil {
             failedDownloads[assetURL] = .now
         }
         drop(key: key, token: token)

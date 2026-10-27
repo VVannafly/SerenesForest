@@ -11,13 +11,15 @@ final class AssetDetailViewModel {
     var image: CGImage?
     var pdfData: Data?
     var loadFailed = false
+    var isOffline = false
 
-    func load(asset: ContentAsset, context: ModelContext) async {
+    func load(asset: ContentAsset, context: ModelContext, retry: Bool = false) async {
             image = nil
             pdfData = nil
             localFile = nil
             player = nil
             loadFailed = false
+            isOffline = false
             let assetURL = asset.url
             let mimeType = asset.mimeType ?? ""
             let container = context.container
@@ -26,12 +28,20 @@ final class AssetDetailViewModel {
                     image = await ImageLoadingService.shared.assetImage(
                         assetURL: assetURL, fetchedAt: fetchedAt, maxPixelSize: 2400, container: container
                     )
+                } else if retry {
+                    image = await ImageLoadingService.shared.retryMissingAssetImage(
+                        assetURL: assetURL, maxPixelSize: 2400, container: container
+                    )
                 } else {
                     image = await ImageLoadingService.shared.missingAssetImage(
                         assetURL: assetURL, maxPixelSize: 2400, container: container
                     )
                 }
+                guard !Task.isCancelled else { return }
                 loadFailed = image == nil
+                if loadFailed {
+                    isOffline = await ImageLoadingService.shared.wasOfflineFailure(for: assetURL)
+                }
                 return
             }
             guard asset.fetchedAt != nil else { return }

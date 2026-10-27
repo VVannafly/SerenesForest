@@ -106,6 +106,10 @@
 "Media file" = "Медиафайл";
 "File unavailable" = "Файл недоступен";
 "Image unavailable" = "Изображение недоступно";
+"No internet connection" = "Нет подключения к интернету";
+"Connect to the internet and try again." = "Подключитесь к интернету и повторите попытку.";
+"Could not load this image." = "Не удалось загрузить изображение.";
+"Try again" = "Повторить";
 "File not in library" = "Файла нет в библиотеке";
 "Article not in library" = "Статьи нет в библиотеке";
 "Open this file" = "Открыть файл";
